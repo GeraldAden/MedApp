@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  meddb:
+    container_name: meddb
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: pgadmin
+      POSTGRES_DB: meddb
+    volumes:
+      - ./db-data:/var/lib/postgresql/data
+      - ./db-scripts:/usr/local/database
+    ports:
+      - "5432:5432"
+    networks:
+      - medapp-network
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: gerald@gmatech.com
+      PGADMIN_DEFAULT_PASSWORD: pgadmin
+    volumes:
+      - ./pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - medapp-network
+networks:
+  medapp-network:
+    driver: bridge
