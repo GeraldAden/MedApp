@@ -1,5 +1,4 @@
 ﻿using Serilog;
-using Serilog.Events;
 using Microsoft.Extensions.Configuration;
 
 var configuration = new ConfigurationBuilder()
