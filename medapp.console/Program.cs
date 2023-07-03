@@ -1,5 +1,6 @@
-﻿using Serilog;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Serilog;
 
 var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
@@ -8,6 +9,22 @@ var configuration = new ConfigurationBuilder()
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(configuration)
     .CreateLogger();
+
+var optionsBuilder = new DbContextOptionsBuilder<MedDbContext>();
+var dbContext = new MedDbContext(optionsBuilder.Options, configuration.GetConnectionString("MedDb"));
+
+var patients = dbContext.Patients
+    .Include(p => p.Addresses)
+    .ToList();
+
+foreach (var patient in patients)
+{
+    Log.Information($"Patient: {patient.FirstName} {patient.LastName}");
+    foreach (var address in patient.Addresses)
+    {
+        Log.Information($"Address: {address.Street}, {address.City}, {address.State} {address.ZipCode}");
+    }
+}
 
 var patient1 = new PatientBuilder()
     .WithDateOfBirth(new DateTime(1990, 1, 1))
@@ -34,3 +51,4 @@ Console.WriteLine($"Patient 1 matches: {(PatientMatch.IsPatientMatch(patient1,
 
 Console.WriteLine($"Patient 2 matches: {(PatientMatch.IsPatientMatch(patient2,
     new PatientMatch.Criteria(51, true, "Anytown" )) ? "Yes" : "No")}");
+
