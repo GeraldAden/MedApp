@@ -4,15 +4,15 @@ public static class PatientMatch
 {
     private static readonly ILogger _logger = Log.ForContext(typeof(PatientMatch));
 
-    public record Criteria(int Age, bool HasCancer, string Town);
+    public record Criteria(int Age, bool HasCancer, string City);
 
-    public static bool IsMatchPatient(Patient patient, Criteria criteria)
+    public static bool IsPatientMatch(Patient patient, Criteria criteria)
     {
         _logger.Information("Matching patient {Patient} with criteria {Criteria}", patient, criteria);
 
         var result = MatchAge(patient, criteria.Age) &&
                      MatchHasCancer(patient, criteria.HasCancer) &&
-                     MatchTown(patient, criteria.Town);
+                     MatchCity(patient, criteria.City);
 
         _logger.Information("Patient {Patient} matched with criteria {Criteria}: {Result}", patient, criteria, result);
 
@@ -21,8 +21,8 @@ public static class PatientMatch
 
     public static bool MatchAge(Patient patient, int age)
     {
-        var result = patient.Age >= age;
-        _logger.Debug("Matching age {PatientAge} with criteria {CriteriaAge}: {Result}", patient.Age, age, result);
+        var result = GetAge(patient.DateOfBirth) >= age;
+        _logger.Debug($"Matching age {patient.DateOfBirth} with criteria {age}: {result}");
         return result;
     }
 
@@ -33,10 +33,18 @@ public static class PatientMatch
         return result;
     }
 
-    public static bool MatchTown(Patient patient, string city)
+    public static bool MatchCity(Patient patient, string city)
     {
-        var result = patient.Address.City.ToLower() == city.ToLower();
-        _logger.Debug("Matching city {PatientCity} with criteria {CriteriaCity}: {Result}", patient.Address.City, city, result);
+        var result = patient.Addresses?.FirstOrDefault()?.City.ToLower() == city.ToLower();
+        _logger.Debug($"Matching city {patient.Addresses?.FirstOrDefault()?.City} with criteria {city}: {result}");
         return result;
+    }
+
+    private static int GetAge(DateTime dob)
+    {
+        var today = DateTime.Today;
+        var age = today.Year - dob.Year;
+        if (dob.Date > today.AddYears(-age)) age--;
+        return age;
     }
 }

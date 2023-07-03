@@ -1,1 +1,7 @@
-public record Address(string Street, string City, string State, string ZipCode);
+public class Address
+{
+    public string Street { get; set; }
+    public string City { get; set; }
+    public string State { get; set; }
+    public string ZipCode { get; set; }
+}
