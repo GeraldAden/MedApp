@@ -1,4 +1,14 @@
-public class DatabaseSettings
+
+public interface IDatabaseSettings
+{
+    string Host { get; set; }
+    string Port { get; set; }
+    string Database { get; set; }
+    string Username { get; set; }
+    string Password { get; set; }
+}
+
+public class DatabaseSettings : IDatabaseSettings
 {
     public string Host { get; set; }
     public string Port { get; set; }

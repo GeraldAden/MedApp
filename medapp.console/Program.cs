@@ -26,56 +26,79 @@ var host = Host.CreateDefaultBuilder(args)
         var databaseSettings = new DatabaseSettings();
         hostContext.Configuration.GetSection("Database").Bind(databaseSettings);
         services.AddSingleton(databaseSettings);
+
+        services.AddScoped<IPatientService, PatientService>();
     })
     .Build();
 
 Log.Information($"Environment: {Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")}");
 
-using (var scope = host.Services.CreateScope())
+// TryCriteriaMatching();
+
+DisplayPatients();
+
+// using (var scope = host.Services.CreateScope())
+// {
+//     var services = scope.ServiceProvider;
+//     var patientService = services.GetRequiredService<IPatientService>();
+
+//     var patients = await patientService.GetPatientsAsync();
+
+//     foreach (var patient in patients)
+//     {
+//         Log.Information($"Patient: {patient.FirstName} {patient.LastName}");
+//         foreach (var address in patient.Addresses)
+//         {
+//             Log.Information($"Address: {address.Street}, {address.City}, {address.State} {address.ZipCode}");
+//         }
+//     }
+// }
+
+void TryCriteriaMatching()
 {
-    var services = scope.ServiceProvider;
-    var dbContext = services.GetRequiredService<MedDbContext>();
-    var databaseSettings = services.GetRequiredService<DatabaseSettings>();
+    var patient1 = new PatientBuilder()
+        .WithDateOfBirth(new DateTime(1990, 1, 1))
+        .IsSmoker(false)
+        .HasCancer(false)
+        .HasDiabetes(false)
+        .WithAddresses(new List<Address> {
+            new Address { Street="123 Main St", City = "Anytown", State = "Anystate", ZipCode = "12345"}
+        })
+        .Build();
 
-    Log.Information($"Database: {databaseSettings.Database}");
+    var patient2 = new PatientBuilder()
+        .WithDateOfBirth(new DateTime(1970, 1, 1))
+        .IsSmoker(false)
+        .HasCancer(true)
+        .HasDiabetes(false)
+        .WithAddresses(new List<Address> {
+            new Address { Street="123 Main St", City = "Anytown", State = "Anystate", ZipCode = "12345"}
+        })
+        .Build();
 
-    var patients = dbContext.Patients
-        .Include(p => p.Addresses)
-        .ToList();
+    Console.WriteLine($"Patient 1 matches: {(PatientMatch.IsPatientMatch(patient1,
+        new PatientMatch.Criteria(51, true, "Anytown" )) ? "Yes" : "No")}");
 
-    foreach (var patient in patients)
+    Console.WriteLine($"Patient 2 matches: {(PatientMatch.IsPatientMatch(patient2,
+        new PatientMatch.Criteria(51, true, "Anytown" )) ? "Yes" : "No")}");
+}
+
+async void DisplayPatients()
+{
+    using (var scope = host.Services.CreateScope())
     {
-        Log.Information($"Patient: {patient.FirstName} {patient.LastName}");
-        foreach (var address in patient.Addresses)
+        var services = scope.ServiceProvider;
+        var patientService = services.GetRequiredService<IPatientService>();
+        var patients = await patientService.GetPatientsAsync();
+
+        foreach (var patient in patients)
         {
-            Log.Information($"Address: {address.Street}, {address.City}, {address.State} {address.ZipCode}");
+            Console.WriteLine($"Patient: {patient.FirstName} {patient.LastName}");
+            foreach (var address in patient.Addresses)
+            {
+                Console.WriteLine($"Address: {address.Street}, {address.City}, {address.State} {address.ZipCode}");
+            }
         }
     }
 }
-
-var patient1 = new PatientBuilder()
-    .WithDateOfBirth(new DateTime(1990, 1, 1))
-    .IsSmoker(false)
-    .HasCancer(false)
-    .HasDiabetes(false)
-    .WithAddresses(new List<Address> {
-        new Address { Street="123 Main St", City = "Anytown", State = "Anystate", ZipCode = "12345"}
-    })
-    .Build();
-
-var patient2 = new PatientBuilder()
-    .WithDateOfBirth(new DateTime(1970, 1, 1))
-    .IsSmoker(false)
-    .HasCancer(true)
-    .HasDiabetes(false)
-    .WithAddresses(new List<Address> {
-        new Address { Street="123 Main St", City = "Anytown", State = "Anystate", ZipCode = "12345"}
-    })
-    .Build();
-
-Console.WriteLine($"Patient 1 matches: {(PatientMatch.IsPatientMatch(patient1,
-    new PatientMatch.Criteria(51, true, "Anytown" )) ? "Yes" : "No")}");
-
-Console.WriteLine($"Patient 2 matches: {(PatientMatch.IsPatientMatch(patient2,
-    new PatientMatch.Criteria(51, true, "Anytown" )) ? "Yes" : "No")}");
 
