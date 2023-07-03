@@ -7,5 +7,5 @@ CREATE TABLE addresses (
   city VARCHAR(255) NOT NULL,
   state VARCHAR(255) NOT NULL,
   zip_code VARCHAR(255) NOT NULL,
-  is_mailing_address BOOLEAN NOT NULL DEFAULT FALSE
-);
+  is_mailing_address BOOLEAN NOT NULL DEFAULT FALSE,
+  patient_id INTEGER REFERENCES patients(id))
