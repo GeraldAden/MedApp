@@ -2,11 +2,8 @@ using Microsoft.EntityFrameworkCore;
 
 public class MedDbContext : DbContext
 {
-    private readonly string _connectionString;
-
-    public MedDbContext(DbContextOptions<MedDbContext> options, string connectionString) : base(options)
+    public MedDbContext(DbContextOptions<MedDbContext> options) : base(options)
     {
-        _connectionString = connectionString;
     }
 
     public DbSet<Patient> Patients { get; set; }
@@ -14,9 +11,7 @@ public class MedDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder
-            .UseNpgsql(_connectionString)
-            .UseSnakeCaseNamingConvention();
+        optionsBuilder.UseSnakeCaseNamingConvention();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

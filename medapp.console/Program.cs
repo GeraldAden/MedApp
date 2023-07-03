@@ -1,28 +1,55 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 
-var configuration = new ConfigurationBuilder()
-    .AddJsonFile("appsettings.json")
+var host = Host.CreateDefaultBuilder(args)
+    .ConfigureAppConfiguration((hostingContext, config) =>
+    {
+        config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+        config.AddJsonFile($"appSettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true);
+    })
+    .UseSerilog((hostingContext, loggerConfiguration) =>
+    {
+        loggerConfiguration
+            .ReadFrom.Configuration(hostingContext.Configuration)
+            .Enrich.FromLogContext();
+    })
+    .ConfigureServices((hostContext, services) =>
+    {
+        services.AddDbContext<MedDbContext>(options =>
+        {
+            options.UseNpgsql(hostContext.Configuration.GetConnectionString("MedDb"));
+        });
+        
+        var databaseSettings = new DatabaseSettings();
+        hostContext.Configuration.GetSection("Database").Bind(databaseSettings);
+        services.AddSingleton(databaseSettings);
+    })
     .Build();
 
-Log.Logger = new LoggerConfiguration()
-    .ReadFrom.Configuration(configuration)
-    .CreateLogger();
+Log.Information($"Environment: {Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")}");
 
-var optionsBuilder = new DbContextOptionsBuilder<MedDbContext>();
-var dbContext = new MedDbContext(optionsBuilder.Options, configuration.GetConnectionString("MedDb"));
-
-var patients = dbContext.Patients
-    .Include(p => p.Addresses)
-    .ToList();
-
-foreach (var patient in patients)
+using (var scope = host.Services.CreateScope())
 {
-    Log.Information($"Patient: {patient.FirstName} {patient.LastName}");
-    foreach (var address in patient.Addresses)
+    var services = scope.ServiceProvider;
+    var dbContext = services.GetRequiredService<MedDbContext>();
+    var databaseSettings = services.GetRequiredService<DatabaseSettings>();
+
+    Log.Information($"Database: {databaseSettings.Database}");
+
+    var patients = dbContext.Patients
+        .Include(p => p.Addresses)
+        .ToList();
+
+    foreach (var patient in patients)
     {
-        Log.Information($"Address: {address.Street}, {address.City}, {address.State} {address.ZipCode}");
+        Log.Information($"Patient: {patient.FirstName} {patient.LastName}");
+        foreach (var address in patient.Addresses)
+        {
+            Log.Information($"Address: {address.Street}, {address.City}, {address.State} {address.ZipCode}");
+        }
     }
 }
 
