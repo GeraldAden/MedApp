@@ -2,9 +2,9 @@ using Microsoft.EntityFrameworkCore;
 
 public interface IPatientService
 {
-//     Task<Patient> GetPatientAsync(string id);
     Task<IEnumerable<Patient>> GetPatientsAsync();
-//     Task AddPatientAsync(Patient patient);
+    Task AddPatientAsync(Patient patient);
+//     Task<Patient> GetPatientAsync(string id);
 //     Task<bool> UpdatePatientAsync(Patient patient);
 //     Task<bool> DeletePatientAsync(string id);
 }
@@ -22,6 +22,12 @@ public class PatientService : IPatientService
         return await _dbContext.Patients
             .Include(p => p.Addresses)
             .ToListAsync();
+    }
+
+    public async Task AddPatientAsync(Patient patient)
+    {
+        await _dbContext.Patients.AddAsync(patient);
+        await _dbContext.SaveChangesAsync();
     }
 
     private readonly MedDbContext _dbContext;

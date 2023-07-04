@@ -7,54 +7,54 @@ using Serilog;
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration((hostingContext, config) =>
     {
-        config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-        config.AddJsonFile($"appSettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true);
+        ConfigureAppConfiguration(hostingContext, config);
     })
     .UseSerilog((hostingContext, loggerConfiguration) =>
     {
-        loggerConfiguration
-            .ReadFrom.Configuration(hostingContext.Configuration)
-            .Enrich.FromLogContext();
+        ConfigureLogging(hostingContext, loggerConfiguration);
     })
     .ConfigureServices((hostContext, services) =>
     {
-        services.AddDbContext<MedDbContext>(options =>
-        {
-            options.UseNpgsql(hostContext.Configuration.GetConnectionString("MedDb"));
-        });
-        
-        var databaseSettings = new DatabaseSettings();
-        hostContext.Configuration.GetSection("Database").Bind(databaseSettings);
-        services.AddSingleton(databaseSettings);
-
-        services.AddScoped<IPatientService, PatientService>();
+        ConfigureServices(hostContext, services);
     })
     .Build();
 
+void ConfigureAppConfiguration(HostBuilderContext hostContext, IConfigurationBuilder config)
+{
+    config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+    config.AddJsonFile($"appSettings.{hostContext.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true);
+}
+
+void ConfigureLogging(HostBuilderContext hostContext, LoggerConfiguration loggerConfiguration)
+{
+    loggerConfiguration
+        .ReadFrom.Configuration(hostContext.Configuration)
+        .Enrich.FromLogContext();
+}
+
+void ConfigureServices(HostBuilderContext hostContext, IServiceCollection services)
+{
+    services.AddDbContext<MedDbContext>(options =>
+    {
+        options.UseNpgsql(hostContext.Configuration.GetConnectionString("MedDb"));
+    });
+    
+    var databaseSettings = new DatabaseSettings();
+    hostContext.Configuration.GetSection("Database").Bind(databaseSettings);
+    services.AddSingleton(databaseSettings);
+
+    services.AddScoped<IPatientService, PatientService>();
+}
+
 Log.Information($"Environment: {Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")}");
 
-// TryCriteriaMatching();
+AddPatients();
 
 DisplayPatients();
 
-// using (var scope = host.Services.CreateScope())
-// {
-//     var services = scope.ServiceProvider;
-//     var patientService = services.GetRequiredService<IPatientService>();
+// TryCriteriaMatching();
 
-//     var patients = await patientService.GetPatientsAsync();
-
-//     foreach (var patient in patients)
-//     {
-//         Log.Information($"Patient: {patient.FirstName} {patient.LastName}");
-//         foreach (var address in patient.Addresses)
-//         {
-//             Log.Information($"Address: {address.Street}, {address.City}, {address.State} {address.ZipCode}");
-//         }
-//     }
-// }
-
-void TryCriteriaMatching()
+async void AddPatients()
 {
     var patient1 = new PatientBuilder()
         .WithDateOfBirth(new DateTime(1990, 1, 1))
@@ -75,12 +75,14 @@ void TryCriteriaMatching()
             new Address { Street="123 Main St", City = "Anytown", State = "Anystate", ZipCode = "12345"}
         })
         .Build();
-
-    Console.WriteLine($"Patient 1 matches: {(PatientMatch.IsPatientMatch(patient1,
-        new PatientMatch.Criteria(51, true, "Anytown" )) ? "Yes" : "No")}");
-
-    Console.WriteLine($"Patient 2 matches: {(PatientMatch.IsPatientMatch(patient2,
-        new PatientMatch.Criteria(51, true, "Anytown" )) ? "Yes" : "No")}");
+    
+    using (var scope = host.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        var patientService = services.GetRequiredService<IPatientService>();
+        await patientService.AddPatientAsync(patient1);
+        await patientService.AddPatientAsync(patient1);
+    }
 }
 
 async void DisplayPatients()
@@ -100,5 +102,34 @@ async void DisplayPatients()
             }
         }
     }
+}
+
+void TryCriteriaMatching()
+{
+    var patient1 = new PatientBuilder()
+        .WithDateOfBirth(new DateTime(1990, 1, 1))
+        .IsSmoker(false)
+        .HasCancer(false)
+        .HasDiabetes(false)
+        .WithAddresses(new List<Address> {
+            new Address { Street="123 Main St", City = "Anytown", State = "Anystate", ZipCode = "12345"}
+        })
+        .Build();
+
+    Console.WriteLine($"Patient 1 matches: {(PatientMatch.IsPatientMatch(patient1,
+        new PatientMatch.Criteria(51, true, "Anytown" )) ? "Yes" : "No")}");
+
+    var patient2 = new PatientBuilder()
+        .WithDateOfBirth(new DateTime(1970, 1, 1))
+        .IsSmoker(false)
+        .HasCancer(true)
+        .HasDiabetes(false)
+        .WithAddresses(new List<Address> {
+            new Address { Street="123 Main St", City = "Anytown", State = "Anystate", ZipCode = "12345"}
+        })
+        .Build();
+
+    Console.WriteLine($"Patient 2 matches: {(PatientMatch.IsPatientMatch(patient2,
+        new PatientMatch.Criteria(51, true, "Anytown" )) ? "Yes" : "No")}");
 }
 
