@@ -34,6 +34,13 @@ void ConfigureLogging(HostBuilderContext hostContext, LoggerConfiguration logger
 
 void ConfigureServices(HostBuilderContext hostContext, IServiceCollection services)
 {
+    ConfigureDatabase(hostContext, services);
+    
+    services.AddScoped<IPatientService, PatientService>();
+}
+
+void ConfigureDatabase(HostBuilderContext hostContext, IServiceCollection services)
+{
     services.AddDbContext<MedDbContext>(options =>
     {
         options.UseNpgsql(hostContext.Configuration.GetConnectionString("MedDb"));
@@ -42,8 +49,6 @@ void ConfigureServices(HostBuilderContext hostContext, IServiceCollection servic
     var databaseSettings = new DatabaseSettings();
     hostContext.Configuration.GetSection("Database").Bind(databaseSettings);
     services.AddSingleton(databaseSettings);
-
-    services.AddScoped<IPatientService, PatientService>();
 }
 
 Log.Information($"Environment: {Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")}");
