@@ -48,15 +48,19 @@ void ConfigureServices(HostBuilderContext hostContext, IServiceCollection servic
 
 Log.Information($"Environment: {Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")}");
 
-AddPatients();
+await AddPatients();
 
-DisplayPatients();
+await DisplayPatients();
 
 // TryCriteriaMatching();
 
-async void AddPatients()
+async Task AddPatients()
 {
+    Log.Debug("Adding patients");
+
     var patient1 = new PatientBuilder()
+        .WithFirstName("John")
+        .WithLastName("Doe")
         .WithDateOfBirth(new DateTime(1990, 1, 1))
         .IsSmoker(false)
         .HasCancer(false)
@@ -67,6 +71,8 @@ async void AddPatients()
         .Build();
 
     var patient2 = new PatientBuilder()
+        .WithFirstName("Jane")
+        .WithLastName("Doe")
         .WithDateOfBirth(new DateTime(1970, 1, 1))
         .IsSmoker(false)
         .HasCancer(true)
@@ -80,13 +86,19 @@ async void AddPatients()
     {
         var services = scope.ServiceProvider;
         var patientService = services.GetRequiredService<IPatientService>();
+
+        Log.Debug("Adding patient 1");
         await patientService.AddPatientAsync(patient1);
-        await patientService.AddPatientAsync(patient1);
+
+        Log.Information("Added patient 2");
+        await patientService.AddPatientAsync(patient2);
     }
 }
 
-async void DisplayPatients()
+async Task DisplayPatients()
 {
+    Log.Debug("Displaying patients");
+
     using (var scope = host.Services.CreateScope())
     {
         var services = scope.ServiceProvider;

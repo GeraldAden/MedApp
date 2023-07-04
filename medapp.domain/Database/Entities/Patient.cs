@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
 public class Patient
 {
     public int Id {get; set;}
@@ -8,4 +11,13 @@ public class Patient
     public bool HasCancer {get; set;}
     public bool HasDiabetes {get; set;}
     public ICollection<Address> Addresses {get; set;}
+}
+
+public class PatientConfiguration : IEntityTypeConfiguration<Patient>
+{
+    public void Configure(EntityTypeBuilder<Patient> builder)
+    {
+        builder.Property(p => p.DateOfBirth)
+            .HasColumnType("date");
+    }
 }
