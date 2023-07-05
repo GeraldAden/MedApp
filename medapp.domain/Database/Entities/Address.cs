@@ -8,4 +8,6 @@ public class Address
     public bool IsMailingAddress { get; set; }
     public int PatientId {get; set;}
     public Patient Patient {get; set;}
+    public DateTime CreatedAt {get; set;}
+    public DateTime UpdatedAt {get; set;}
 }
