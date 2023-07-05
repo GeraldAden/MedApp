@@ -25,7 +25,7 @@ await RunApp(host.Services);
 
 await host.RunAsync();
 
-static async Task RunApp(IServiceProvider services)
+async Task RunApp(IServiceProvider services)
 {
     await AddPatients(services);
 
@@ -66,7 +66,7 @@ void ConfigureDatabase(HostBuilderContext hostContext, IServiceCollection servic
     services.AddSingleton(databaseSettings);
 }
 
-static async Task AddPatients(IServiceProvider services)
+async Task AddPatients(IServiceProvider services)
 {
     Log.Debug("Adding patients");
 
@@ -107,7 +107,7 @@ static async Task AddPatients(IServiceProvider services)
         await patientService.AddPatientAsync(patient2);
 }
 
-static async Task DisplayPatients(IServiceProvider services)
+async Task DisplayPatients(IServiceProvider services)
 {
     Log.Debug("Displaying patients");
 
@@ -126,7 +126,7 @@ static async Task DisplayPatients(IServiceProvider services)
     }
 }
 
-static void TryCriteriaMatching()
+void TryCriteriaMatching()
 {
     var patient1 = new PatientBuilder()
         .WithDateOfBirth(new DateTime(1990, 1, 1))
