@@ -10,6 +10,6 @@ CREATE TABLE patients (
   is_smoker BOOLEAN NOT NULL,
   has_cancer BOOLEAN NOT NULL,
   has_diabetes BOOLEAN NOT NULL,
-  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP
 );

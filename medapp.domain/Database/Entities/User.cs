@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
 public class User
 {
     public int Id {get; set;}
@@ -9,4 +12,17 @@ public class User
     public string HashedPassword {get; set;}
     public DateTime CreatedAt {get; set;}
     public DateTime UpdatedAt {get; set;}
+}
+
+public class UserConfiguration : IEntityTypeConfiguration<User>
+{
+    public void Configure(EntityTypeBuilder<User> builder)
+    {
+        builder.Property(u => u.CreatedAt)
+            .HasColumnType("timestamp");
+
+        builder.Property(u => u.UpdatedAt)
+            .HasColumnType("timestamp")
+            .HasDefaultValueSql("NOW()");
+    }
 }

@@ -27,6 +27,8 @@ await host.RunAsync();
 
 async Task RunApp(IServiceProvider services)
 {
+    await AddUsers(services);
+
     await AddPatients(services);
 
     await DisplayPatients(services);
@@ -51,6 +53,7 @@ void ConfigureServices(HostBuilderContext hostContext, IServiceCollection servic
 {
     ConfigureDatabase(hostContext, services);
     
+    services.AddScoped<IUserService, UserService>();
     services.AddScoped<IPatientService, PatientService>();
 }
 
@@ -64,6 +67,26 @@ void ConfigureDatabase(HostBuilderContext hostContext, IServiceCollection servic
     var databaseSettings = new DatabaseSettings();
     hostContext.Configuration.GetSection("Database").Bind(databaseSettings);
     services.AddSingleton(databaseSettings);
+}
+
+async Task AddUsers(IServiceProvider services)
+{
+    Log.Debug("Adding users");
+
+    using var scope = services.CreateScope();
+
+    var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
+
+    var user = new User {
+        FirstName = "John",
+        LastName = "Doe",
+        Username = "johndoe",
+        Email = "johndoe@sie.com",
+        Salt = "cZv0TStO5Tgj41leZg+vLCGg75AL/KlL+lV15GbQ098=",
+        HashedPassword = "QKfLAcZdfFc1vYRGyadc65vshqY8Feoh+V4BMu+bhZflJL+s6K++z/FiIEe+3b7/EoP1lNExvjrJfU+M5Knojw=="
+    };
+
+    await userService.AddUserAsync(user);
 }
 
 async Task AddPatients(IServiceProvider services)

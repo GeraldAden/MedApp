@@ -22,5 +22,13 @@ public class PatientConfiguration : IEntityTypeConfiguration<Patient>
     {
         builder.Property(p => p.DateOfBirth)
             .HasColumnType("date");
+
+        builder.Property(p => p.CreatedAt)
+            .HasColumnType("timestamp")
+            .HasDefaultValueSql("NOW()");
+
+        builder.Property(p => p.UpdatedAt)
+            .HasColumnType("timestamp")
+            .HasDefaultValueSql("NOW()");
     }
 }
