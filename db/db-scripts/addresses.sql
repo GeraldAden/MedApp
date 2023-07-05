@@ -8,6 +8,7 @@ CREATE TABLE addresses (
   state VARCHAR(255) NOT NULL,
   zip_code VARCHAR(255) NOT NULL,
   is_mailing_address BOOLEAN NOT NULL DEFAULT FALSE,
-  patient_id INTEGER REFERENCES patients(id))
+  patient_id INTEGER REFERENCES patients(id),
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMP
+);
