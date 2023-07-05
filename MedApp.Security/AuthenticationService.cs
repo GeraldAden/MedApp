@@ -1,11 +1,13 @@
-﻿namespace MedApp.Security;
+﻿using System.Security.Cryptography;
 
-public static class Authentication
+namespace MedApp.Security;
+
+public static class AuthenticationService
 {
     public static (string hashedPassword, string salt) GenerateHashAndSalt(string password)
     {
         var salt = GenerateSalt();
-        var hashedPassword = GenerateHashedPassword(password, salt);
+        var hashedPassword = GenerateHash(password, salt);
 
         return (Convert.ToBase64String(hashedPassword), Convert.ToBase64String(salt));
     }

@@ -4,6 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
+Log.Information($"Environment: {Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")}");
+
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration((hostingContext, config) =>
     {
@@ -18,6 +20,19 @@ var host = Host.CreateDefaultBuilder(args)
         ConfigureServices(hostContext, services);
     })
     .Build();
+
+await RunApp(host.Services);
+
+await host.RunAsync();
+
+static async Task RunApp(IServiceProvider services)
+{
+    await AddPatients(services);
+
+    await DisplayPatients(services);
+
+    // TryCriteriaMatching(services);
+}
 
 void ConfigureAppConfiguration(HostBuilderContext hostContext, IConfigurationBuilder config)
 {
@@ -51,22 +66,19 @@ void ConfigureDatabase(HostBuilderContext hostContext, IServiceCollection servic
     services.AddSingleton(databaseSettings);
 }
 
-Log.Information($"Environment: {Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")}");
-
-await AddPatients();
-
-await DisplayPatients();
-
-// TryCriteriaMatching();
-
-async Task AddPatients()
+static async Task AddPatients(IServiceProvider services)
 {
     Log.Debug("Adding patients");
+
+    using var scope = services.CreateScope();
+
+    var patientService = scope.ServiceProvider.GetRequiredService<IPatientService>();
 
     var patient1 = new PatientBuilder()
         .WithFirstName("John")
         .WithLastName("Doe")
         .WithDateOfBirth(new DateTime(1990, 1, 1))
+        .WithEmail("johndoe@site.com")
         .IsSmoker(false)
         .HasCancer(false)
         .HasDiabetes(false)
@@ -79,6 +91,7 @@ async Task AddPatients()
         .WithFirstName("Jane")
         .WithLastName("Doe")
         .WithDateOfBirth(new DateTime(1970, 1, 1))
+        .WithEmail("janedoe@site.com")
         .IsSmoker(false)
         .HasCancer(true)
         .HasDiabetes(false)
@@ -86,42 +99,34 @@ async Task AddPatients()
             new Address { Street="123 Main St", City = "Anytown", State = "Anystate", ZipCode = "12345"}
         })
         .Build();
-    
-    using (var scope = host.Services.CreateScope())
-    {
-        var services = scope.ServiceProvider;
-        var patientService = services.GetRequiredService<IPatientService>();
 
         Log.Debug("Adding patient 1");
         await patientService.AddPatientAsync(patient1);
 
         Log.Information("Added patient 2");
         await patientService.AddPatientAsync(patient2);
-    }
 }
 
-async Task DisplayPatients()
+static async Task DisplayPatients(IServiceProvider services)
 {
     Log.Debug("Displaying patients");
 
-    using (var scope = host.Services.CreateScope())
-    {
-        var services = scope.ServiceProvider;
-        var patientService = services.GetRequiredService<IPatientService>();
-        var patients = await patientService.GetPatientsAsync();
+    using var scope = services.CreateScope();
+    var patientService = scope.ServiceProvider.GetRequiredService<IPatientService>();
 
-        foreach (var patient in patients)
+    var patients = await patientService.GetPatientsAsync();
+
+    foreach (var patient in patients)
+    {
+        Console.WriteLine($"Patient: {patient.FirstName} {patient.LastName}");
+        foreach (var address in patient.Addresses)
         {
-            Console.WriteLine($"Patient: {patient.FirstName} {patient.LastName}");
-            foreach (var address in patient.Addresses)
-            {
-                Console.WriteLine($"Address: {address.Street}, {address.City}, {address.State} {address.ZipCode}");
-            }
+            Console.WriteLine($"Address: {address.Street}, {address.City}, {address.State} {address.ZipCode}");
         }
     }
 }
 
-void TryCriteriaMatching()
+static void TryCriteriaMatching()
 {
     var patient1 = new PatientBuilder()
         .WithDateOfBirth(new DateTime(1990, 1, 1))

@@ -3,6 +3,7 @@ public class PatientBuilder
     private string _firstName;
     private string _lastName;
     private DateTime _dateOfBirth;
+    private string _email;
     private bool _isSmoker;
     private bool _hasCancer;
     private bool _hasDiabetes;
@@ -23,6 +24,12 @@ public class PatientBuilder
     public PatientBuilder WithDateOfBirth(DateTime dateOfBirth)
     {
         _dateOfBirth = dateOfBirth;
+        return this;
+    }
+
+    public PatientBuilder WithEmail(string email)
+    {
+        _email = email;
         return this;
     }
 
@@ -57,6 +64,7 @@ public class PatientBuilder
             FirstName = _firstName,
             LastName = _lastName,
             DateOfBirth = _dateOfBirth,
+            Email = _email,
             IsSmoker = _isSmoker,
             HasCancer = _hasCancer,
             HasDiabetes = _hasDiabetes,
