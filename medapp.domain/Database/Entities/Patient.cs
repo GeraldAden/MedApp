@@ -13,7 +13,7 @@ public class Patient
     public bool HasCancer {get; set;}
     public bool HasDiabetes {get; set;}
     public DateTime CreatedAt {get; set;}
-    public DateTime UpdatedAt {get; set;}
+    public DateTime? UpdatedAt {get; set;}
 }
 
 public class PatientConfiguration : IEntityTypeConfiguration<Patient>
@@ -28,7 +28,6 @@ public class PatientConfiguration : IEntityTypeConfiguration<Patient>
             .HasDefaultValueSql("NOW()");
 
         builder.Property(p => p.UpdatedAt)
-            .HasColumnType("timestamp")
-            .HasDefaultValueSql("NOW()");
+            .HasColumnType("timestamp");
     }
 }

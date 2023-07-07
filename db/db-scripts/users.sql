@@ -10,5 +10,5 @@ CREATE TABLE users (
     salt VARCHAR(50) NOT NULL,
     hashed_password VARCHAR(256) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMP
+    updated_at TIMESTAMP NULL DEFAULT NULL
 );

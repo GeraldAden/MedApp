@@ -11,7 +11,7 @@ public class User
     public string Salt {get; set;}
     public string HashedPassword {get; set;}
     public DateTime CreatedAt {get; set;}
-    public DateTime UpdatedAt {get; set;}
+    public DateTime? UpdatedAt {get; set;}
 }
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
@@ -19,10 +19,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.Property(u => u.CreatedAt)
-            .HasColumnType("timestamp");
-
-        builder.Property(u => u.UpdatedAt)
             .HasColumnType("timestamp")
             .HasDefaultValueSql("NOW()");
+
+        builder.Property(u => u.UpdatedAt)
+            .HasColumnType("timestamp");
     }
 }
