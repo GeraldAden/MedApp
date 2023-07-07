@@ -14,7 +14,7 @@ public class User
     public DateTime? UpdatedAt {get; set;}
 }
 
-public class UserConfiguration : IEntityTypeConfiguration<User>
+public class AddressConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {

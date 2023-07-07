@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using MedApp.Infrastructure.Database;
 
 Log.Information($"Environment: {Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")}");
 
@@ -17,6 +18,7 @@ var host = Host.CreateDefaultBuilder(args)
     })
     .ConfigureServices((hostContext, services) =>
     {
+        DatabaseConfiguration.ConfigureDatabase(hostContext, services);
         ConfigureServices(hostContext, services);
     })
     .Build();
@@ -50,23 +52,9 @@ void ConfigureLogging(HostBuilderContext hostContext, LoggerConfiguration logger
 }
 
 void ConfigureServices(HostBuilderContext hostContext, IServiceCollection services)
-{
-    ConfigureDatabase(hostContext, services);
-    
+{    
     services.AddScoped<IUserService, UserService>();
     services.AddScoped<IPatientService, PatientService>();
-}
-
-void ConfigureDatabase(HostBuilderContext hostContext, IServiceCollection services)
-{
-    services.AddDbContext<MedDbContext>(options =>
-    {
-        options.UseNpgsql(hostContext.Configuration.GetConnectionString("MedDb"));
-    });
-    
-    var databaseSettings = new DatabaseSettings();
-    hostContext.Configuration.GetSection("Database").Bind(databaseSettings);
-    services.AddSingleton(databaseSettings);
 }
 
 async Task AddUsers(IServiceProvider services)

@@ -21,6 +21,7 @@ public class MedDbContext : DbContext
 
         modelBuilder.ApplyConfiguration(new UserConfiguration());
         modelBuilder.ApplyConfiguration(new PatientConfiguration());
+        modelBuilder.ApplyConfiguration(new AddressConfiguration());
 
         modelBuilder.Entity<Patient>()
             .HasMany(p => p.Addresses)
