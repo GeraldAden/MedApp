@@ -24,6 +24,7 @@ public class MedDbContext : DbContext
         modelBuilder.ApplyConfiguration(new AddressConfiguration());
 
         modelBuilder.Entity<Patient>()
+            .ToTable("patients")
             .HasMany(p => p.Addresses)
             .WithOne(a => a.Patient)
             .HasForeignKey(a => a.PatientId);

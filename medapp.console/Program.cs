@@ -1,9 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using MedApp.Infrastructure.Database;
+using MedApp.Domain.Configuration;
 
 Log.Information($"Environment: {Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")}");
 
@@ -18,7 +17,7 @@ var host = Host.CreateDefaultBuilder(args)
     })
     .ConfigureServices((hostContext, services) =>
     {
-        DatabaseConfiguration.ConfigureDatabase(hostContext, services);
+        DomainConfiguration.ConfigureDomain(hostContext, services);
         ConfigureServices(hostContext, services);
     })
     .Build();
@@ -52,7 +51,8 @@ void ConfigureLogging(HostBuilderContext hostContext, LoggerConfiguration logger
 }
 
 void ConfigureServices(HostBuilderContext hostContext, IServiceCollection services)
-{    
+{
+    services.AddScoped<IPatientService, PatientService>();
     services.AddScoped<IUserService, UserService>();
     services.AddScoped<IPatientService, PatientService>();
 }

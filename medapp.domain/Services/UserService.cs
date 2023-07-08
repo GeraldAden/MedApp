@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-
 public interface IUserService
 {
     // Task<IEnumerable<User>> GetUsersAsync();
@@ -12,23 +10,15 @@ public interface IUserService
 public class UserService : IUserService
 {
 
-    public UserService(MedDbContext dbContext)
+    public UserService(IUserRepository userRepository)
     {
-        _dbContext = dbContext;
+        _userRepository = userRepository;
     }
-
-    // public async Task<IEnumerable<Patient>> GetPatientsAsync()
-    // {
-    //     return await _dbContext.Patients
-    //         .Include(p => p.Addresses)
-    //         .ToListAsync();
-    // }
 
     public async Task AddUserAsync(User user)
     {
-        await _dbContext.Users.AddAsync(user);
-        await _dbContext.SaveChangesAsync();
+        await _userRepository.AddUserAsync(user);
     }
 
-    private readonly MedDbContext _dbContext;
+    private readonly IUserRepository _userRepository;
 }

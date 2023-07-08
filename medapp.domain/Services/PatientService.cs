@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-
 public interface IPatientService
 {
     Task<IEnumerable<Patient>> GetPatientsAsync();
@@ -12,24 +10,21 @@ public interface IPatientService
 public class PatientService : IPatientService
 {
 
-    public PatientService(MedDbContext dbContext)
+    public PatientService(IPatientRepository patientRepository)
     {
-        _dbContext = dbContext;
+        _patientRepository = patientRepository;
     }
 
     public async Task<IEnumerable<Patient>> GetPatientsAsync()
     {
-        return await _dbContext.Patients
-            .Include(p => p.Addresses)
-            .ToListAsync();
+        return await _patientRepository.GetPatientsAsync();
     }
 
     public async Task AddPatientAsync(Patient patient)
     {
         patient.DateOfBirth = patient.DateOfBirth.ToUniversalTime();
-        await _dbContext.Patients.AddAsync(patient);
-        await _dbContext.SaveChangesAsync();
+        await _patientRepository.AddPatientAsync(patient);
     }
 
-    private readonly MedDbContext _dbContext;
+    private readonly IPatientRepository _patientRepository;
 }

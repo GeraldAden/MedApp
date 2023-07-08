@@ -3,11 +3,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace MedApp.Infrastructure.Database;
+namespace MedApp.Infrastructure.Configuration;
 
-public static class DatabaseConfiguration
+public static class InfrastructureConfiguration
 {
-    public static void ConfigureDatabase(HostBuilderContext hostContext, IServiceCollection services)
+    public static void Configure(HostBuilderContext hostContext, IServiceCollection services)
     {
         services.AddDbContext<MedDbContext>(options =>
         {
