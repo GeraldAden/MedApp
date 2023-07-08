@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="serilog" Version="3.0.1" />
+    <ProjectReference Include="..\MedApp.Infrastructure\MedApp.Infrastructure.csproj" />
+    <ProjectReference Include="..\MedApp.Repositories\MedApp.Repositories.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MedApp.Infrastructure\MedApp.Infrastructure.csproj" />
-    <ProjectReference Include="..\MedApp.Repositories\MedApp.Repositories.csproj" />
+    <PackageReference Include="serilog" Version="3.0.1" />
   </ItemGroup>
 
 </Project>

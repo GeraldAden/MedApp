@@ -10,17 +10,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MedApp.Domain\MedApp.Domain.csproj" />
+    <ProjectReference Include="..\MedApp.Infrastructure\MedApp.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="fluentassertions" Version="6.11.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
     <PackageReference Include="NUnit" Version="3.13.3" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
     <PackageReference Include="NUnit.Analyzers" Version="3.6.1" />
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\MedApp.Domain\MedApp.Domain.csproj" />
-    <ProjectReference Include="..\MedApp.Infrastructure\MedApp.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
