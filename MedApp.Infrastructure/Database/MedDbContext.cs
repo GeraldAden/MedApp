@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using MedApp.Infrastructure.Database.Entities;
+
+namespace MedApp.Infrastructure.Database;
 
 public class MedDbContext : DbContext
 {

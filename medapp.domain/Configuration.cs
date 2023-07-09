@@ -1,8 +1,10 @@
+namespace MedApp.Domain.Configuration;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MedApp.Repositories.Configuration;
-
-namespace MedApp.Domain.Configuration;
+using MedApp.Repositories.Interfaces;
+using MedApp.Repositories.Implementations;
 
 public static class DomainConfiguration
 {

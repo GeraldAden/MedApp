@@ -1,8 +1,10 @@
+namespace MedApp.Repositories.Configuration;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MedApp.Infrastructure.Configuration;
-
-namespace MedApp.Repositories.Configuration;
+using MedApp.Repositories.Interfaces;
+using MedApp.Repositories.Implementations;
 
 public static class RepositoriesConfiguration
 {

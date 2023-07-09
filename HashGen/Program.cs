@@ -1,4 +1,4 @@
-﻿using MedApp.Security;
+﻿using MedApp.Security.Services;
 
 if (args.Count() == 0)
 {

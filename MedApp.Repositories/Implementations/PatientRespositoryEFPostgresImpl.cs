@@ -1,4 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using MedApp.Repositories.Interfaces;
+using MedApp.Infrastructure.Database;
+using MedApp.Infrastructure.Database.Entities;
+
+namespace MedApp.Repositories.Implementations;
+
 public class PatientRepositryEFPostgresImpl : IPatientRepository
 {
     public PatientRepositryEFPostgresImpl(MedDbContext dbContext)

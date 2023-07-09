@@ -1,6 +1,6 @@
-﻿using System.Security.Cryptography;
+﻿namespace MedApp.Security.Services;
 
-namespace MedApp.Security;
+using System.Security.Cryptography;
 
 public static class AuthenticationService
 {

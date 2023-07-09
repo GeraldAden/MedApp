@@ -1,3 +1,7 @@
+namespace MedApp.Repositories.Interfaces;
+
+using MedApp.Infrastructure.Database.Entities;
+
 public interface IUserRepository
 {
     // Task<IEnumerable<User>> GetUsersAsync();

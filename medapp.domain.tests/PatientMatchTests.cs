@@ -1,7 +1,10 @@
+namespace MedApp.Domain.Tests;
+
 using FluentAssertions;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using MedApp.Infrastructure.Database.Entities;
 
 [TestFixture]
 public class PatientMatchTests

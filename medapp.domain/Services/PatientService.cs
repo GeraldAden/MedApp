@@ -1,3 +1,8 @@
+namespace MedApp.Domain.Services;
+
+using MedApp.Infrastructure.Database.Entities;
+using MedApp.Repositories.Interfaces;
+
 public interface IPatientService
 {
     Task<IEnumerable<Patient>> GetPatientsAsync();

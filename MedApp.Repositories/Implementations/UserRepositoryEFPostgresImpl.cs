@@ -1,3 +1,9 @@
+namespace MedApp.Repositories.Implementations;
+
+using MedApp.Repositories.Interfaces;
+using MedApp.Infrastructure.Database;
+using MedApp.Infrastructure.Database.Entities;
+
 public class UserRepositoryEFPostgresImpl : IUserRepository
 {
 

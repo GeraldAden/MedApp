@@ -1,3 +1,7 @@
+namespace MedApp.Domain.Buiiders;
+
+using MedApp.Infrastructure.Database.Entities;
+
 public class PatientBuilder
 {
     private string _firstName;

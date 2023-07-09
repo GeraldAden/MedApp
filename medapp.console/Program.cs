@@ -2,7 +2,11 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using MedApp.Domain;
+using MedApp.Domain.Buiiders;
 using MedApp.Domain.Configuration;
+using MedApp.Domain.Services;
+using MedApp.Infrastructure.Database.Entities;
 
 Log.Information($"Environment: {Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")}");
 

@@ -1,3 +1,5 @@
+namespace MedApp.Infrastructure.Database.Entities;
+
 public class Patient
 {
     public int Id {get; set;}

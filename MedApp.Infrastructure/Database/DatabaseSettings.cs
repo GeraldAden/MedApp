@@ -1,3 +1,4 @@
+namespace MedApp.Infrastructure.Database;
 
 public interface IDatabaseSettings
 {
