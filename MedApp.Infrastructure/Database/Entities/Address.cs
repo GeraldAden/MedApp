@@ -1,6 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
 public class Address
 {
     public int Id { get; set; }
@@ -13,17 +10,4 @@ public class Address
     public Patient Patient {get; set;}
     public DateTime CreatedAt {get; set;}
     public DateTime? UpdatedAt {get; set;}
-}
-
-public class UserConfiguration : IEntityTypeConfiguration<Address>
-{
-    public void Configure(EntityTypeBuilder<Address> builder)
-    {
-        builder.Property(u => u.CreatedAt)
-            .HasColumnType("timestamp")
-            .HasDefaultValueSql("NOW()");
-
-        builder.Property(u => u.UpdatedAt)
-            .HasColumnType("timestamp");
-    }
 }
