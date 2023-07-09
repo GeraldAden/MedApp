@@ -5,11 +5,10 @@ public class MedDbContext : DbContext
 {
     public MedDbContext(DbContextOptions<MedDbContext> options) : base(options)
     {
+       ChangeTracker.QueryTrackingBehavior =
+       QueryTrackingBehavior.NoTracking;
+       this.ChangeTracker.LazyLoadingEnabled = false;
     }
-
-    public DbSet<User> Users { get; set; }
-    public DbSet<Patient> Patients { get; set; }
-    public DbSet<Address> Addresses { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -30,6 +29,10 @@ public class MedDbContext : DbContext
             .WithOne(a => a.Patient)
             .HasForeignKey(a => a.PatientId);
     }
+
+    public DbSet<User> Users { get; set; }
+    public DbSet<Patient> Patients { get; set; }
+    public DbSet<Address> Addresses { get; set; }
 }
 
 public class UserConfiguration : IEntityTypeConfiguration<Address>
