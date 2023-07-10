@@ -31,6 +31,12 @@ public class MedDbContext : DbContext
             .HasMany(p => p.Addresses)
             .WithOne(a => a.Patient)
             .HasForeignKey(a => a.PatientId);
+
+        modelBuilder.Entity<Address>()
+            .ToTable("addresses");
+
+        modelBuilder.Entity<User>()
+            .ToTable("users");
     }
 
     public DbSet<User> Users { get; set; }
