@@ -1,6 +1,6 @@
 namespace MedApp.Repositories.Interfaces;
 
-using MedApp.Infrastructure.Database.Entities;
+using MedApp.Domain.Data.Models;
 
 public interface IPatientRepository
 {

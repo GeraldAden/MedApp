@@ -1,15 +1,18 @@
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 using MedApp.Repositories.Interfaces;
 using MedApp.Infrastructure.Database;
-using MedApp.Infrastructure.Database.Entities;
+using Entities = MedApp.Infrastructure.Database.Entities;
+using MedApp.Domain.Data.Models;
 
 namespace MedApp.Repositories.Implementations;
 
 public class PatientRepositryEFPostgresImpl : IPatientRepository
 {
-    public PatientRepositryEFPostgresImpl(MedDbContext dbContext)
+    public PatientRepositryEFPostgresImpl(MedDbContext dbContext, IMapper mapper)
     {
         _dbContext = dbContext;
+        _mapper = mapper;
     }
 
     public async Task<IEnumerable<Patient>> GetPatientsAsync()
@@ -21,10 +24,12 @@ public class PatientRepositryEFPostgresImpl : IPatientRepository
 
     public async Task AddPatientAsync(Patient patient)
     {
+        var patientEntity = 
         patient.DateOfBirth = patient.DateOfBirth.ToUniversalTime();
         await _dbContext.Patients.AddAsync(patient);
         await _dbContext.SaveChangesAsync();
     }
 
     private readonly MedDbContext _dbContext;
+    private readonly IMapper _mapper;
 }

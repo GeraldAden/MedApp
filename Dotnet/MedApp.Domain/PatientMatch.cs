@@ -1,7 +1,7 @@
 namespace MedApp.Domain;
 
 using Serilog;
-using MedApp.Infrastructure.Database.Entities;
+using MedApp.Domain.Data.Models;
 
 public static class PatientMatch
 {

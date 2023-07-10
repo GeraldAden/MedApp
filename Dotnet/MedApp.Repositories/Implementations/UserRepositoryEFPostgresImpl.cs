@@ -1,5 +1,6 @@
 namespace MedApp.Repositories.Implementations;
 
+using AutoMapper;
 using MedApp.Repositories.Interfaces;
 using MedApp.Infrastructure.Database;
 using MedApp.Infrastructure.Database.Entities;
@@ -7,9 +8,10 @@ using MedApp.Infrastructure.Database.Entities;
 public class UserRepositoryEFPostgresImpl : IUserRepository
 {
 
-    public UserRepositoryEFPostgresImpl(MedDbContext dbContext)
+    public UserRepositoryEFPostgresImpl(MedDbContext dbContext, IMapper mapper)
     {
         _dbContext = dbContext;
+        _mapper = mapper;
     }
 
     public async Task AddUserAsync(User user)
@@ -19,4 +21,5 @@ public class UserRepositoryEFPostgresImpl : IUserRepository
     }
 
     private readonly MedDbContext _dbContext;
+    private readonly IMapper _mapper;
 }

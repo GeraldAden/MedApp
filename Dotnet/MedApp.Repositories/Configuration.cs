@@ -13,5 +13,6 @@ public static class RepositoriesConfiguration
         InfrastructureConfiguration.Configure(hostContext, services);
         services.AddScoped<IPatientRepository, PatientRepositryEFPostgresImpl>();
         services.AddScoped<IUserRepository, UserRepositoryEFPostgresImpl>();
+        services.AddAutoMapper(typeof(MappingProfile));
     }
 }

@@ -1,4 +1,4 @@
-namespace MedApp.Repositories.Mappings;
+namespace MedApp.Repositories;
 
 using AutoMapper;
 using MedApp.Domain.Data.Models;

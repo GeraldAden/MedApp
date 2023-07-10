@@ -1,6 +1,6 @@
 namespace MedApp.Domain.Services;
 
-using MedApp.Infrastructure.Database.Entities;
+using MedApp.Domain.Data.Models;
 using MedApp.Repositories.Interfaces;
 
 public interface IPatientService
