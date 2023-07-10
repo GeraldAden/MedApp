@@ -17,16 +17,20 @@ public class PatientRepositryEFPostgresImpl : IPatientRepository
 
     public async Task<IEnumerable<Patient>> GetPatientsAsync()
     {
-        return await _dbContext.Patients
+        var patientEntities = await _dbContext.Patients
             .Include(p => p.Addresses)
             .ToListAsync();
+
+        var patients = _mapper.Map<IEnumerable<Patient>>(patientEntities);
+
+        return patients;
     }
 
     public async Task AddPatientAsync(Patient patient)
     {
-        var patientEntity = 
         patient.DateOfBirth = patient.DateOfBirth.ToUniversalTime();
-        await _dbContext.Patients.AddAsync(patient);
+        var patientEntity = _mapper.Map<Entities.Patient>(patient);
+        await _dbContext.Patients.AddAsync(patientEntity);
         await _dbContext.SaveChangesAsync();
     }
 

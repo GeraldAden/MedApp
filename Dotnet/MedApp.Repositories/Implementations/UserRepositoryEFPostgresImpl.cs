@@ -3,7 +3,8 @@ namespace MedApp.Repositories.Implementations;
 using AutoMapper;
 using MedApp.Repositories.Interfaces;
 using MedApp.Infrastructure.Database;
-using MedApp.Infrastructure.Database.Entities;
+using Entities = MedApp.Infrastructure.Database.Entities;
+using MedApp.Domain.Data.Models;
 
 public class UserRepositoryEFPostgresImpl : IUserRepository
 {
@@ -16,7 +17,8 @@ public class UserRepositoryEFPostgresImpl : IUserRepository
 
     public async Task AddUserAsync(User user)
     {
-        await _dbContext.Users.AddAsync(user);
+        var userEntity = _mapper.Map<Entities.User>(user);
+        await _dbContext.Users.AddAsync(userEntity);
         await _dbContext.SaveChangesAsync();
     }
 
