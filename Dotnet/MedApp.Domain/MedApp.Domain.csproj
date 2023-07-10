@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MedApp.Infrastructure\MedApp.Infrastructure.csproj" />
     <ProjectReference Include="..\MedApp.Repositories\MedApp.Repositories.csproj" />
+    <ProjectReference Include="..\MedApp.Domain.Data\MedApp.Domain.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>

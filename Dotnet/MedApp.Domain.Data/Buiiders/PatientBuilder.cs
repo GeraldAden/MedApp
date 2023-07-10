@@ -1,6 +1,6 @@
-namespace MedApp.Domain.Buiiders;
+namespace MedApp.Domain.Data.Buiiders;
 
-using MedApp.Infrastructure.Database.Entities;
+using MedApp.Domain.Data.Models;
 
 public class PatientBuilder
 {
