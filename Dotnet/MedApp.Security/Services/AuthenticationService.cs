@@ -2,9 +2,15 @@
 
 using System.Security.Cryptography;
 
-public static class AuthenticationService
+public interface IAuthenticationService
 {
-    public static (string hashedPassword, string salt) GenerateHashAndSalt(string password)
+    (string passwordHash, string passwordSalt) GenerateHashAndSalt(string password);
+    bool IsPasswordValid(string password, string passwordHash, string passwordSalt);
+}
+
+public class AuthenticationService : IAuthenticationService
+{
+    public (string passwordHash, string passwordSalt) GenerateHashAndSalt(string password)
     {
         var salt = GenerateSalt();
         var hashedPassword = GenerateHash(password, salt);
@@ -12,7 +18,7 @@ public static class AuthenticationService
         return (Convert.ToBase64String(hashedPassword), Convert.ToBase64String(salt));
     }
     
-    public static bool IsPasswordValid(string password, string passwordHash, string passwordSalt)
+    public bool IsPasswordValid(string password, string passwordHash, string passwordSalt)
     {
         var salt = Convert.FromBase64String(passwordSalt);
         var hash = GenerateHash(password, salt);
@@ -20,7 +26,7 @@ public static class AuthenticationService
         return passwordHash == Convert.ToBase64String(hash);
     }
     
-    private static byte[] GenerateSalt()
+    private byte[] GenerateSalt()
     {
         var saltBytes = new byte[32];
         using (var rng = new RNGCryptoServiceProvider())

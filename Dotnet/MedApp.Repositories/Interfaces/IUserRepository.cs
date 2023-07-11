@@ -5,8 +5,8 @@ using MedApp.Domain.Data.Models;
 public interface IUserRepository
 {
     // Task<IEnumerable<User>> GetUsersAsync();
-    Task AddUserAsync(User patient);
-//     Task<Patient> GetPatientAsync(string id);
+    Task AddUserAsync(User user);
+    Task<User> GetUserAsync(string username);
 //     Task<bool> UpdatePatientAsync(Patient patient);
 //     Task<bool> DeletePatientAsync(string id);
 }

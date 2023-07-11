@@ -7,6 +7,9 @@ using MedApp.Domain.Data.Models;
 using MedApp.Domain.Data.Builders;
 using MedApp.Domain.Configuration;
 using MedApp.Domain.Services;
+using MedApp.Security.Configuration;
+using MedApp.Security.Services;
+using MedApp.Extensions;
 
 Log.Information($"Environment: {Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")}");
 
@@ -22,6 +25,7 @@ var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((hostContext, services) =>
     {
         DomainConfiguration.ConfigureDomain(hostContext, services);
+        SecurityConfiguration.ConfigureSecurity(hostContext, services);
         ConfigureServices(hostContext, services);
     })
     .Build();
@@ -32,6 +36,23 @@ await host.RunAsync();
 
 async Task RunApp(IServiceProvider services)
 {
+    var authenticated = false;
+
+    // while (!authenticated)
+    // {
+    //     Console.Write("Enter username:");
+    //     var username = Console.ReadLine();
+    //     if (username.IsNullOrEmpty())
+    //         continue;
+
+    //     Console.Write("Enter password:");
+    //     var password = Console.ReadLine();
+    //     if (password.IsNullOrEmpty())
+    //         continue;
+
+    //     authenticated = await AuthenticateUser(services, username, password);
+    // }
+
     await AddUsers(services);
 
     await AddPatients(services);
@@ -61,6 +82,28 @@ void ConfigureServices(HostBuilderContext hostContext, IServiceCollection servic
     services.AddScoped<IPatientService, PatientService>();
 }
 
+async Task<bool> AuthenticateUser(IServiceProvider services, string username, string password)
+{
+    Log.Debug("Authenticating user");
+
+    using var scope = services.CreateScope();
+
+    var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
+
+    var user = await userService.GetAuthenticatedUserAsync(username, password);
+
+    if (user != null)
+    {
+        Log.Information($"Welcome {user.FirstName} {user.LastName}");
+        return true;
+    }
+    else
+    {
+        Log.Information("Invalid username or password");
+        return false;
+    }
+}
+
 async Task AddUsers(IServiceProvider services)
 {
     Log.Debug("Adding users");
@@ -74,8 +117,8 @@ async Task AddUsers(IServiceProvider services)
         LastName = "Doe",
         Username = "johndoe",
         Email = "johndoe@sie.com",
-        Salt = "cZv0TStO5Tgj41leZg+vLCGg75AL/KlL+lV15GbQ098=",
-        HashedPassword = "QKfLAcZdfFc1vYRGyadc65vshqY8Feoh+V4BMu+bhZflJL+s6K++z/FiIEe+3b7/EoP1lNExvjrJfU+M5Knojw=="
+        PasswordSalt = "cZv0TStO5Tgj41leZg+vLCGg75AL/KlL+lV15GbQ098=",
+        PasswordHash = "QKfLAcZdfFc1vYRGyadc65vshqY8Feoh+V4BMu+bhZflJL+s6K++z/FiIEe+3b7/EoP1lNExvjrJfU+M5Knojw=="
     };
 
     await userService.AddUserAsync(user);

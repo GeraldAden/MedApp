@@ -1,4 +1,8 @@
-﻿using MedApp.Security.Services;
+﻿using Microsoft.Extensions.DependencyInjection;
+using MedApp.Security.Services;
+
+string passwordHash;
+string passwordSalt;
 
 if (args.Count() == 0)
 {
@@ -8,7 +12,16 @@ if (args.Count() == 0)
 
 var password = args[0];
 
-var (hashedPassword, salt) = AuthenticationService.GenerateHashAndSalt(password);
+var services = new ServiceCollection();
+services.AddTransient<IAuthenticationService, AuthenticationService>();
 
-Console.WriteLine($"Hashed password: {hashedPassword}");
-Console.WriteLine($"Salt: {salt}");
+var serviceProvider = services.BuildServiceProvider();
+using (var scope = serviceProvider.CreateScope())
+{
+    var authenticationService = scope.ServiceProvider.GetRequiredService<IAuthenticationService>();
+
+    (passwordHash, passwordSalt) = authenticationService.GenerateHashAndSalt(password);
+}
+
+Console.WriteLine($"Password Hash: {passwordHash}");
+Console.WriteLine($"Password Salt: {passwordSalt}");

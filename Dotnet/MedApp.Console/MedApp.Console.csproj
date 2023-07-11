@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MedApp.Domain\MedApp.Domain.csproj" />
     <ProjectReference Include="..\MedApp.Domain.Data\MedApp.Domain.Data.csproj" />
+    <ProjectReference Include="..\MedApp.Security\MedApp.Security.csproj" />
   </ItemGroup>
 
   <ItemGroup>
