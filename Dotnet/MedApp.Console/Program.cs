@@ -4,7 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using MedApp.Domain;
 using MedApp.Domain.Data.Models;
-using MedApp.Domain.Data.Buiiders;
+using MedApp.Domain.Data.Builders;
 using MedApp.Domain.Configuration;
 using MedApp.Domain.Services;
 

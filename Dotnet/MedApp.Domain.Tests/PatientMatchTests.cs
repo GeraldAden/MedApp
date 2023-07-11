@@ -4,7 +4,7 @@ using FluentAssertions;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using MedApp.Infrastructure.Database.Entities;
+using MedApp.Domain.Data.Models;
 
 [TestFixture]
 public class PatientMatchTests

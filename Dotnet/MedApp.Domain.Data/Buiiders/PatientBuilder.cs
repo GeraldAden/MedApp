@@ -1,4 +1,4 @@
-namespace MedApp.Domain.Data.Buiiders;
+namespace MedApp.Domain.Data.Builders;
 
 using MedApp.Domain.Data.Models;
 
