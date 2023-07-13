@@ -1,6 +1,6 @@
 SET SEARCH_PATH TO records;
 
-INSERT INTO users (first_name, last_name, username, email, salt, hashed_password)
+INSERT INTO users (first_name, last_name, username, email, password_salt, password_hash)
 VALUES (
     'John',
     'Doe',

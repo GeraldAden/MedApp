@@ -1,3 +1,3 @@
-\i users.sql;
-\i patients.sql;
-\i addresses.sql;
+\i create-users.sql;
+\i create-patients.sql;
+\i create-addresses.sql;
