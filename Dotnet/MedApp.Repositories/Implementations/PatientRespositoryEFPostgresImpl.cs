@@ -28,7 +28,7 @@ public class PatientRepositryEFPostgresImpl : IPatientRepository
 
     public async Task AddPatientAsync(Patient patient)
     {
-        patient.DateOfBirth = patient.DateOfBirth.ToUniversalTime();
+        var patientToAdd = patient with { DateOfBirth = patient.DateOfBirth.ToUniversalTime() };
         var patientEntity = _mapper.Map<Entities.Patient>(patient);
         await _dbContext.Patients.AddAsync(patientEntity);
         await _dbContext.SaveChangesAsync();

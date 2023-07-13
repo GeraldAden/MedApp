@@ -18,9 +18,11 @@ public class PatientBuilderTests
             .IsSmoker(false)
             .HasCancer(false)
             .HasDiabetes(true)
-            .WithAddresses(new List<Address> {
-                new Address { Street = "123 Main St", City = "Anytown", State = "CA", ZipCode = "12345" }
-            });
+            .WithAddresses(new List<Address>
+                {
+                    new Address ( "123 Main St", "Anytown", "CA", "12345" )
+                }
+            );
 
         // Act
         var patient = builder.Build();

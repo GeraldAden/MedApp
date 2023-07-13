@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -122,14 +121,14 @@ async Task AddUsers(IServiceScope scope)
 
     var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
 
-    var user = new User {
-        FirstName = "John",
-        LastName = "Doe",
-        Username = "johndoe",
-        Email = "johndoe@sie.com",
-        PasswordSalt = "cZv0TStO5Tgj41leZg+vLCGg75AL/KlL+lV15GbQ098=",
-        PasswordHash = "QKfLAcZdfFc1vYRGyadc65vshqY8Feoh+V4BMu+bhZflJL+s6K++z/FiIEe+3b7/EoP1lNExvjrJfU+M5Knojw=="
-    };
+    var user = new User (
+        "John",
+        "Doe",
+        "johndoe",
+        "johndoe@sie.com",
+        "cZv0TStO5Tgj41leZg+vLCGg75AL/KlL+lV15GbQ098=",
+        "QKfLAcZdfFc1vYRGyadc65vshqY8Feoh+V4BMu+bhZflJL+s6K++z/FiIEe+3b7/EoP1lNExvjrJfU+M5Knojw=="
+    );
 
     await userService.AddUserAsync(user);
 }
@@ -152,7 +151,7 @@ async Task AddPatients(IServiceScope scope)
         .HasCancer(false)
         .HasDiabetes(false)
         .WithAddresses(new List<Address> {
-            new Address { Street="123 Main St", City = "Anytown", State = "Anystate", ZipCode = "12345"}
+            new Address ("123 Main St", "Anytown", "Anystate", "12345")
         })
         .Build();
 
@@ -165,7 +164,7 @@ async Task AddPatients(IServiceScope scope)
         .HasCancer(true)
         .HasDiabetes(false)
         .WithAddresses(new List<Address> {
-            new Address { Street="123 Main St", City = "Anytown", State = "Anystate", ZipCode = "12345"}
+            new Address ("123 Main St", "Anytown", "Anystate", "12345", true)
         })
         .Build();
 
@@ -204,7 +203,7 @@ void TryCriteriaMatching()
         .HasCancer(false)
         .HasDiabetes(false)
         .WithAddresses(new List<Address> {
-            new Address { Street="123 Main St", City = "Anytown", State = "Anystate", ZipCode = "12345"}
+            new Address ( "123 Main St", "Anytown", "Anystate", "12345")
         })
         .Build();
 
@@ -217,7 +216,7 @@ void TryCriteriaMatching()
         .HasCancer(true)
         .HasDiabetes(false)
         .WithAddresses(new List<Address> {
-            new Address { Street="123 Main St", City = "Anytown", State = "Anystate", ZipCode = "12345"}
+            new Address ("123 Main St", "Anytown", "Anystate", "12345")
         })
         .Build();
 

@@ -13,7 +13,7 @@ public class PatientMatchTests
     public void MatchAge_ReturnsTrue_WhenPatientAgeIsGreaterThanOrEqualToCriteriaAge()
     {
         // Arrange
-        var patient = new Patient { DateOfBirth = new DateTime(1980, 1, 1) };
+        var patient = new Patient ( "John", "Doe",  new DateTime(1980, 1, 1), "jdoe@site.com", new List<Address>());
         var criteriaAge = 40;
 
         // Act
@@ -27,7 +27,7 @@ public class PatientMatchTests
     public void MatchAge_ReturnsFalse_WhenPatientAgeIsLessThanCriteriaAge()
     {
         // Arrange
-        var patient = new Patient { DateOfBirth = new DateTime(2010, 1, 1) };
+        var patient = new Patient ( "John", "Doe",  new DateTime(2010, 1, 1), "jdoe@site.com", new List<Address>());
         var criteriaAge = 21;
 
         // Act
@@ -41,14 +41,13 @@ public class PatientMatchTests
     public void MatchAddress_ReturnsTrue_WhenPatientHasMatchingCity()
     {
         // Arrange
-        var patient = new Patient
-        {
-            Addresses = new List<Address>
+        var patient = new Patient ( "John", "Doe",  new DateTime(2010, 1, 1), "jdoe@site.com",
+            new List<Address>
             {
-                new Address { Street = "123 Main St", City = "Anytown", State = "CA", ZipCode = "12345" },
-                new Address { Street = "456 Oak St", City = "Othertown", State = "CA", ZipCode = "67890" }
+                new Address ( "123 Main St", "Anytown", "CA", "12345" ),
+                new Address ( "456 Oak St", "Othertown", "CA", "67890" )
             }
-        };
+        );
         var criteriaCity = "Anytown";
 
         // Act
@@ -62,14 +61,13 @@ public class PatientMatchTests
     public void MatchAddress_ReturnsFalse_WhenPatientDoesNotHaveMatchingCity()
     {
         // Arrange
-        var patient = new Patient
-        {
-            Addresses = new List<Address>
+        var patient = new Patient ( "John", "Doe",  new DateTime(2010, 1, 1), "jdoe@site.com",
+            new List<Address>
             {
-                new Address { Street = "123 Main St", City = "Anytown", State = "CA", ZipCode = "12345" },
-                new Address { Street = "456 Oak St", City = "Othertown", State = "CA", ZipCode = "67890" }
+                new Address ( "123 Main St", "Anytown", "CA", "12345" ),
+                new Address ( "456 Oak St", "Othertown", "CA", "67890" )
             }
-        };
+        );
         var criteriaCity = "AnotherTown" ;
 
         // Act
@@ -83,19 +81,17 @@ public class PatientMatchTests
     public void Match_ReturnsTrue_WhenAllCriteriaMatch()
     {
         // Arrange
-        var patient = new Patient
-        {
-            FirstName = "John",
-            LastName = "Doe",
-            DateOfBirth = new DateTime(1980, 1, 1),
-            IsSmoker = false,
-            HasCancer = false,
-            HasDiabetes = true,
-            Addresses = new List<Address>
+        var patient = new Patient (
+            "John",
+            "Doe",
+            new DateTime(1980, 1, 1),
+            "jdoe@site.com",
+            new List<Address>
             {
-                new Address { Street = "123 Main St", City = "Anytown", State = "CA", ZipCode = "12345" }
-            }
-        };
+                new ("123 Main St", "Anytown", "CA", "12345")
+            },
+            false, false, true
+        );
         var criteria = new PatientMatch.Criteria(40, false, "Anytown");
 
         // Act
@@ -109,19 +105,17 @@ public class PatientMatchTests
     public void Match_ReturnsFalse_WhenAnyCriteriaDoesNotMatch()
     {
         // Arrange
-        var patient = new Patient
-        {
-            FirstName = "John",
-            LastName = "Doe",
-            DateOfBirth = new DateTime(1980, 1, 1),
-            IsSmoker = false,
-            HasCancer = false,
-            HasDiabetes = true,
-            Addresses = new List<Address>
+        var patient = new Patient (
+            "John",
+            "Doe",
+            new DateTime(1980, 1, 1),
+            "jdoe@site.com",
+            new List<Address>
             {
-                new Address { Street = "123 Main St", City = "Anytown", State = "CA", ZipCode = "12345" }
-            }
-        };
+                new ("123 Main St", "Anytown", "CA", "12345")
+            },
+            false, false, true
+        );
         var criteria = new PatientMatch.Criteria(40, false, "AnotherTown");
 
         // Act

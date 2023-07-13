@@ -1,13 +1,12 @@
 namespace MedApp.Domain.Data.Models;
 
-public class Patient
-{
-    public string FirstName {get; set;}
-    public string LastName {get; set;}
-    public DateTime DateOfBirth {get; set;}
-    public string Email {get; set;}
-    public ICollection<Address> Addresses {get; set;}
-    public bool IsSmoker {get; set;}
-    public bool HasCancer {get; set;}
-    public bool HasDiabetes {get; set;}
-}
+public record Patient(
+    string FirstName,
+    string LastName,
+    DateTime DateOfBirth,
+    string Email,
+    ICollection<Address> Addresses,
+    bool IsSmoker = false,
+    bool HasCancer = false,
+    bool HasDiabetes = false
+);

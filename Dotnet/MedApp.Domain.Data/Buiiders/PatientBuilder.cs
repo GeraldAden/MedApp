@@ -64,15 +64,15 @@ public class PatientBuilder
     public Patient Build()
     {
         return new Patient
-        {
-            FirstName = _firstName,
-            LastName = _lastName,
-            DateOfBirth = _dateOfBirth,
-            Email = _email,
-            IsSmoker = _isSmoker,
-            HasCancer = _hasCancer,
-            HasDiabetes = _hasDiabetes,
-            Addresses = _addresses
-        };
+        (
+            _firstName,
+            _lastName,
+            _dateOfBirth,
+            _email,
+            _addresses,
+            _isSmoker,
+            _hasCancer,
+            _hasDiabetes
+        );
     }
 }

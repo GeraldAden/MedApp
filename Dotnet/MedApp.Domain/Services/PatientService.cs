@@ -27,7 +27,6 @@ public class PatientService : IPatientService
 
     public async Task AddPatientAsync(Patient patient)
     {
-        patient.DateOfBirth = patient.DateOfBirth.ToUniversalTime();
         await _patientRepository.AddPatientAsync(patient);
     }
 
