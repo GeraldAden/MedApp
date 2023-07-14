@@ -35,8 +35,6 @@ await host.RunAsync();
 async Task RunApp(IServiceProvider services)
 {
     Log.Information($"Environment: {Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")}");
-    // var process = Process.GetCurrentProcess();
-    // Log.Information($"Process ID: {process.Id}");
 
     using var scope = services.CreateScope();
 
@@ -54,13 +52,8 @@ async Task RunApp(IServiceProvider services)
         if (password.IsNullOrEmpty())
             continue;
 
-        // var username = "johndoe";
-        // var password = "mypassword";
-
         authenticated = await AuthenticateUser(scope, username, password);
     }
-
-    await AddUsers(scope);
 
     await AddPatients(scope);
 
@@ -89,12 +82,9 @@ void ConfigureServices(HostBuilderContext hostContext, IServiceCollection servic
     services.AddScoped<IPatientService, PatientService>();
 }
 
-// async Task<bool> AuthenticateUser(IServiceProvider services, string username, string password)
 async Task<bool> AuthenticateUser(IServiceScope scope, string username, string password)
 {
     Log.Debug("Authenticating user");
-
-    // using var scope = services.CreateScope();
 
     var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
 
@@ -112,33 +102,9 @@ async Task<bool> AuthenticateUser(IServiceScope scope, string username, string p
     }
 }
 
-// async Task AddUsers(IServiceProvider services)
-async Task AddUsers(IServiceScope scope)
-{
-    Log.Debug("Adding users");
-
-    // using var scope = services.CreateScope();
-
-    var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
-
-    var user = new User (
-        "John",
-        "Doe",
-        "johndoe",
-        "johndoe@sie.com",
-        "cZv0TStO5Tgj41leZg+vLCGg75AL/KlL+lV15GbQ098=",
-        "QKfLAcZdfFc1vYRGyadc65vshqY8Feoh+V4BMu+bhZflJL+s6K++z/FiIEe+3b7/EoP1lNExvjrJfU+M5Knojw=="
-    );
-
-    await userService.AddUserAsync(user);
-}
-
-// async Task AddPatients(IServiceProvider services)
 async Task AddPatients(IServiceScope scope)
 {
     Log.Debug("Adding patients");
-
-    // using var scope = services.CreateScope();
 
     var patientService = scope.ServiceProvider.GetRequiredService<IPatientService>();
 
@@ -175,12 +141,10 @@ async Task AddPatients(IServiceScope scope)
         await patientService.AddPatientAsync(patient2);
 }
 
-// async Task DisplayPatients(IServiceProvider services)
 async Task DisplayPatients(IServiceScope scope)
 {
     Log.Debug("Displaying patients");
 
-    // using var scope = services.CreateScope();
     var patientService = scope.ServiceProvider.GetRequiredService<IPatientService>();
 
     var patients = await patientService.GetPatientsAsync();
