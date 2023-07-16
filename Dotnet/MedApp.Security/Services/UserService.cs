@@ -7,7 +7,7 @@ public interface IUserService
 {
     // Task<IEnumerable<User>> GetUsersAsync();
     Task AddUserAsync(User user);
-    Task<User> GetAuthenticatedUserAsync(string username, string password);
+    Task<User?> GetAuthenticatedUserAsync(string username, string password);
 //     Task<bool> UpdatePatientAsync(Patient patient);
 //     Task<bool> DeletePatientAsync(string id);
 }
@@ -26,7 +26,7 @@ public class UserService : IUserService
         await _userRepository.AddUserAsync(user);
     }
 
-    public async Task<User> GetAuthenticatedUserAsync(string username, string password)
+    public async Task<User?> GetAuthenticatedUserAsync(string username, string password)
     {
         var user = await _userRepository.GetUserAsync(username);
         if (user == null)

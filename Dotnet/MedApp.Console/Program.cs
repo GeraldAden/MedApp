@@ -9,7 +9,6 @@ using MedApp.Domain.Configuration;
 using MedApp.Domain.Services;
 using MedApp.Security.Configuration;
 using MedApp.Security.Services;
-using MedApp.Extensions;
 
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration((hostingContext, config) =>
@@ -34,7 +33,7 @@ await host.RunAsync();
 
 async Task RunApp(IServiceProvider services)
 {
-    Log.Information($"Environment: {Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")}");
+    Log.Debug($"Environment: {Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")}");
 
     using var scope = services.CreateScope();
 
@@ -44,12 +43,12 @@ async Task RunApp(IServiceProvider services)
     {
         Console.Write("Enter username: ");
         var username = Console.ReadLine();
-        if (username.IsNullOrEmpty())
+        if (String.IsNullOrEmpty(username))
             continue;
 
         Console.Write("Enter password: ");
         var password = Console.ReadLine();
-        if (password.IsNullOrEmpty())
+        if (String.IsNullOrEmpty(password))
             continue;
 
         authenticated = await AuthenticateUser(scope, username, password);
@@ -159,32 +158,32 @@ async Task DisplayPatients(IServiceScope scope)
     }
 }
 
-void TryCriteriaMatching()
-{
-    var patient1 = new PatientBuilder()
-        .WithDateOfBirth(new DateTime(1990, 1, 1))
-        .IsSmoker(false)
-        .HasCancer(false)
-        .HasDiabetes(false)
-        .WithAddresses(new List<Address> {
-            new Address ( "123 Main St", "Anytown", "Anystate", "12345")
-        })
-        .Build();
+// void TryCriteriaMatching()
+// {
+//     var patient1 = new PatientBuilder()
+//         .WithDateOfBirth(new DateTime(1990, 1, 1))
+//         .IsSmoker(false)
+//         .HasCancer(false)
+//         .HasDiabetes(false)
+//         .WithAddresses(new List<Address> {
+//             new Address ( "123 Main St", "Anytown", "Anystate", "12345")
+//         })
+//         .Build();
 
-    Console.WriteLine($"Patient 1 matches: {(PatientMatch.IsPatientMatch(patient1,
-        new PatientMatch.Criteria(51, true, "Anytown" )) ? "Yes" : "No")}");
+//     Console.WriteLine($"Patient 1 matches: {(PatientMatch.IsPatientMatch(patient1,
+//         new PatientMatch.Criteria(51, true, "Anytown" )) ? "Yes" : "No")}");
 
-    var patient2 = new PatientBuilder()
-        .WithDateOfBirth(new DateTime(1970, 1, 1))
-        .IsSmoker(false)
-        .HasCancer(true)
-        .HasDiabetes(false)
-        .WithAddresses(new List<Address> {
-            new Address ("123 Main St", "Anytown", "Anystate", "12345")
-        })
-        .Build();
+//     var patient2 = new PatientBuilder()
+//         .WithDateOfBirth(new DateTime(1970, 1, 1))
+//         .IsSmoker(false)
+//         .HasCancer(true)
+//         .HasDiabetes(false)
+//         .WithAddresses(new List<Address> {
+//             new Address ("123 Main St", "Anytown", "Anystate", "12345")
+//         })
+//         .Build();
 
-    Console.WriteLine($"Patient 2 matches: {(PatientMatch.IsPatientMatch(patient2,
-        new PatientMatch.Criteria(51, true, "Anytown" )) ? "Yes" : "No")}");
-}
+//     Console.WriteLine($"Patient 2 matches: {(PatientMatch.IsPatientMatch(patient2,
+//         new PatientMatch.Criteria(51, true, "Anytown" )) ? "Yes" : "No")}");
+// }
 

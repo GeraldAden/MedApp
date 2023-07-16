@@ -29,7 +29,7 @@ public class AuthenticationService : IAuthenticationService
     private byte[] GenerateSalt()
     {
         var saltBytes = new byte[32];
-        using (var rng = new RNGCryptoServiceProvider())
+        using (var rng = RandomNumberGenerator.Create())
         {
             rng.GetBytes(saltBytes);
         }

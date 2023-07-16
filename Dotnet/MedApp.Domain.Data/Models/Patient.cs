@@ -1,6 +1,6 @@
 namespace MedApp.Domain.Data.Models;
 
-public record Patient(
+public record Patient (
     string FirstName,
     string LastName,
     DateTime DateOfBirth,

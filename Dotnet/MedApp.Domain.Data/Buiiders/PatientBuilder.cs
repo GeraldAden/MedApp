@@ -4,14 +4,14 @@ using MedApp.Domain.Data.Models;
 
 public class PatientBuilder
 {
-    private string _firstName;
-    private string _lastName;
+    private string? _firstName;
+    private string? _lastName;
     private DateTime _dateOfBirth;
-    private string _email;
+    private string? _email;
     private bool _isSmoker;
     private bool _hasCancer;
     private bool _hasDiabetes;
-    private ICollection<Address> _addresses;
+    private ICollection<Address>? _addresses;
 
     public PatientBuilder WithFirstName(string firstName)
     {
@@ -63,6 +63,22 @@ public class PatientBuilder
 
     public Patient Build()
     {
+        if (_firstName is null)
+        {
+            throw new InvalidOperationException("First name is required");
+        }
+        if (_lastName is null)
+        {
+            throw new InvalidOperationException("Last name is required");
+        }
+        if (_email is null)
+        {
+            throw new InvalidOperationException("Email is required");
+        }
+        if (_addresses is null)
+        {
+            throw new InvalidOperationException("Addresses are required");
+        }
         return new Patient
         (
             _firstName,
