@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Text;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using MedApp.Domain;
 using MedApp.Domain.Data.Models;
 using MedApp.Domain.Data.Builders;
 using MedApp.Domain.Configuration;
@@ -47,7 +47,7 @@ async Task RunApp(IServiceProvider services)
             continue;
 
         Console.Write("Enter password: ");
-        var password = Console.ReadLine();
+        var password = ReadPassword();
         if (String.IsNullOrEmpty(password))
             continue;
 
@@ -156,6 +156,20 @@ async Task DisplayPatients(IServiceScope scope)
             Console.WriteLine($"Address: {address.Street}, {address.City}, {address.State} {address.ZipCode}");
         }
     }
+}
+
+string ReadPassword()
+{
+    var password = new StringBuilder();
+
+    while (true)
+    {
+        var key = Console.ReadKey(true);
+        if (key.Key == ConsoleKey.Enter)
+            break;
+        password.Append(key.KeyChar);
+    }
+    return password.ToString();
 }
 
 // void TryCriteriaMatching()
