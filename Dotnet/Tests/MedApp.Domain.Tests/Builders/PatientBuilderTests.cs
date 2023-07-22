@@ -14,6 +14,7 @@ public class PatientBuilderTests
         var builder = new PatientBuilder()
             .WithFirstName("John")
             .WithLastName("Doe")
+            .WithEmail("johndoe@example.com")
             .WithDateOfBirth(new DateTime(1980, 1, 1))
             .IsSmoker(false)
             .HasCancer(false)
