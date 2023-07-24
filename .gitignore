@@ -2,6 +2,8 @@
 **/bin/
 **/obj/
 **/node_modules/
-db/db-data/
-db/pgadmin/
+**/Database/db-data/
+**/Database/pgadmin/
+**/Vault/logs/
+**/Vault/data/
 **/logs/

@@ -10,8 +10,8 @@ services:
       POSTGRES_PASSWORD: pgadmin
       POSTGRES_DB: meddb
     volumes:
-      - ./db/db-data:/var/lib/postgresql/data
-      - ./db/db-scripts:/usr/local/database
+      - ./Database/db-data:/var/lib/postgresql/data
+      - ./Database/db-scripts:/usr/local/database
     ports:
       - "5432:5432"
     networks:
@@ -25,7 +25,7 @@ services:
       PGADMIN_DEFAULT_EMAIL: gerald@gmatech.com
       PGADMIN_DEFAULT_PASSWORD: pgadmin
     volumes:
-      - ./db/pgadmin:/var/lib/pgadmin
+      - ./Database/pgadmin:/var/lib/pgadmin
     ports:
       - "5050:80"
     networks:
