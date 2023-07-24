@@ -38,14 +38,17 @@ services:
     environment:
       VAULT_DEV_ROOT_TOKEN_ID: 'root'
       VAULT_DEV_LISTEN_ADDRESS: '0.0.0.0:8200'
+      # VAULT_ADDR: "http://0.0.0.0:8200"
     volumes:
       - ./vault/data:/vault/data
       - ./vault/logs:/etc/vault/logs
+      # - ./vault/config:/vault/config
     ports:
       - "8200:8200/tcp"
     cap_add:
       - IPC_LOCK
-    entrypoint: "vault server -dev "
+    # entrypoint: "vault server -config=/vault/config/config.hcl"
+    entrypoint: "vault server -dev"
     networks:
       - medapp-network
 
