@@ -33,8 +33,7 @@ await host.RunAsync();
 
 async Task RunApp(IServiceProvider services)
 {
-    Log.Debug($"Environment: {Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")}");
-    Log.Debug($"ConnectionString: {Environment.GetEnvironmentVariable("ConnectionStrings__MedDb")}");
+    // Log.Debug($"Environment: {Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")}");
 
     using var scope = services.CreateScope();
 
@@ -55,11 +54,31 @@ async Task RunApp(IServiceProvider services)
         authenticated = await AuthenticateUser(scope, username, password);
     }
 
-    await AddPatients(scope);
+    while (true)
+    {
+        Console.Write("Enter command (add, display, exit): ");
+        var command = Console.ReadLine();
 
-    await DisplayPatients(scope);
+        if (String.IsNullOrEmpty(command))
+            continue;
+
+        if (command.ToLower() == "exit")
+            break;
+
+        if (command.ToLower() == "add")
+        {
+            await AddPatients(scope);
+        }
+
+        if (command.ToLower() == "display")
+        {
+            await DisplayPatients(scope);
+        }
+    }
 
     // TryCriteriaMatching(services);
+
+    Environment.Exit(0);
 }
 
 void ConfigureAppConfiguration(HostBuilderContext hostContext, IConfigurationBuilder config)
