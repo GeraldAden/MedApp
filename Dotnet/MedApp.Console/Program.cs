@@ -34,6 +34,7 @@ await host.RunAsync();
 async Task RunApp(IServiceProvider services)
 {
     Log.Debug($"Environment: {Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")}");
+    Log.Debug($"ConnectionString: {Environment.GetEnvironmentVariable("ConnectionStrings__MedDb")}");
 
     using var scope = services.CreateScope();
 
@@ -65,6 +66,7 @@ void ConfigureAppConfiguration(HostBuilderContext hostContext, IConfigurationBui
 {
     config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
     config.AddJsonFile($"appSettings.{hostContext.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true);
+    config.AddEnvironmentVariables();
 }
 
 void ConfigureLogging(HostBuilderContext hostContext, LoggerConfiguration loggerConfiguration)
