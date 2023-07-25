@@ -14,9 +14,5 @@ public static class InfrastructureConfiguration
         {
             options.UseNpgsql(hostContext.Configuration.GetConnectionString("MedDb"));
         });
-        
-        var databaseSettings = new DatabaseSettings();
-        hostContext.Configuration.GetSection("DatabaseSettings").Bind(databaseSettings);
-        services.AddSingleton(databaseSettings);
     }
 }
