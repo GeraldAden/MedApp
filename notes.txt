@@ -1,1 +1,0 @@
-Getting host ip from WSL2: ip route | awk '/default/ { print $3 }'
