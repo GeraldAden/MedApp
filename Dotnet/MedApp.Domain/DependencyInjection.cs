@@ -10,6 +10,5 @@ public static class DependencyInjection
     public static void AddDomain(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IPatientRepository, PatientRepositoryEFPostgresImpl>();
-        services.AddScoped<IUserRepository, UserRepositoryEFPostgresImpl>();
     }
 }

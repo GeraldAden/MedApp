@@ -10,7 +10,6 @@ public static class DependencyInjection
     public static void AddRepositories(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IPatientRepository, PatientRepositoryEFPostgresImpl>();
-        services.AddScoped<IUserRepository, UserRepositoryEFPostgresImpl>();
         services.AddAutoMapper(typeof(MappingProfile));
     }
 }

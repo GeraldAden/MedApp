@@ -8,10 +8,9 @@ using MedApp.Domain;
 using MedApp.Domain.Services;
 using MedApp.Domain.Data.Models;
 using MedApp.Domain.Data.Builders;
-using MedApp.Security;
-using MedApp.Security.Services;
-using MedApp.Repositories;
 using MedApp.Infrastructure;
+using MedApp.Infrastructure.Security;
+using MedApp.Repositories;
 
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration((hostingContext, config) =>
@@ -101,7 +100,6 @@ void ConfigureServices(HostBuilderContext hostContext, IServiceCollection servic
     services.AddInfrastructure(hostContext.Configuration);
     services.AddRepositories(hostContext.Configuration);
     services.AddDomain(hostContext.Configuration);
-    services.AddSecurity(hostContext.Configuration);
     services.AddApplication(hostContext.Configuration);
 }
 

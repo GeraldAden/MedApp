@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using MedApp.Security.Services;
+using MedApp.Infrastructure.Security;
 
 string passwordHash;
 string passwordSalt;

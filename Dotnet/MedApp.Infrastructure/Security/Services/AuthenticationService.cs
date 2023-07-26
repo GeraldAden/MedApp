@@ -1,4 +1,4 @@
-﻿namespace MedApp.Security.Services;
+﻿namespace MedApp.Infrastructure.Security;
 
 using System.Security.Cryptography;
 
@@ -20,6 +20,8 @@ public class AuthenticationService : IAuthenticationService
     
     public bool IsPasswordValid(string password, string passwordHash, string passwordSalt)
     {
+        if (string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(passwordHash) || string.IsNullOrWhiteSpace(passwordSalt))
+            return false;
         var salt = Convert.FromBase64String(passwordSalt);
         var hash = GenerateHash(password, salt);
 

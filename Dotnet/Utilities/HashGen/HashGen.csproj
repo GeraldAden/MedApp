@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\..\MedApp.Security\MedApp.Security.csproj" />
+    <ProjectReference Include="..\..\MedApp.Infrastructure\MedApp.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

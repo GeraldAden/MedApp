@@ -1,8 +1,7 @@
-namespace MedApp.Security;
+namespace MedApp.Infrastructure;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
-using MedApp.Security.Services;
 
 public static class DependencyInjection
 {

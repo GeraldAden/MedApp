@@ -1,44 +1,47 @@
-namespace MedApp.Security.Services;
+namespace MedApp.Infrastructure.Security;
 
-using MedApp.Domain.Data.Models;
-using MedApp.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using MedApp.Infrastructure.Database;
+using MedApp.Infrastructure.Database.Entities;
 
 public interface IUserService
 {
-    // Task<IEnumerable<User>> GetUsersAsync();
     Task AddUserAsync(User user);
     Task<User?> GetAuthenticatedUserAsync(string username, string password);
-//     Task<bool> UpdatePatientAsync(Patient patient);
-//     Task<bool> DeletePatientAsync(string id);
 }
 
 public class UserService : IUserService
 {
 
-    public UserService(IUserRepository userRepository, IAuthenticationService authenticationService)
+    public UserService(MedDbContext medDbContext, IAuthenticationService authenticationService)
     {
-        _userRepository = userRepository;
+        _medDbContext = medDbContext;
         _authenticationService = authenticationService;
     }
 
     public async Task AddUserAsync(User user)
     {
-        await _userRepository.AddUserAsync(user);
+        await _medDbContext.Users.AddAsync(user);
+        await _medDbContext.SaveChangesAsync();
     }
 
     public async Task<User?> GetAuthenticatedUserAsync(string username, string password)
     {
-        var user = await _userRepository.GetUserAsync(username);
-        if (user == null)
+        var user = await _medDbContext.Users
+            .SingleOrDefaultAsync(user => user.Username == username);
+        if (user is null)
             return null;
 
+        #pragma warning disable CS8604
         var isPasswordValid = _authenticationService.IsPasswordValid(password, user.PasswordHash, user.PasswordSalt);
+        #pragma warning disable CS8604
+        
         if (!isPasswordValid)
             return null;
 
         return user;
     }
 
-    private readonly IUserRepository _userRepository;
+    private readonly MedDbContext _medDbContext;
     private readonly IAuthenticationService _authenticationService;
 }

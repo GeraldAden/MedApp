@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MedApp.Infrastructure.Database;
+using MedApp.Infrastructure.Security;
 
 namespace MedApp.Infrastructure;
 
@@ -13,5 +14,6 @@ public static class DependencyInjection
         {
             options.UseNpgsql(configuration.GetConnectionString("MedDb"));
         });
+        services.AddScoped<IAuthenticationService, AuthenticationService>();
     }
 }
