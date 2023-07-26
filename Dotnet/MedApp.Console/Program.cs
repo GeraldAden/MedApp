@@ -3,12 +3,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using MedApp.Console;
+using MedApp.Domain;
+using MedApp.Domain.Services;
 using MedApp.Domain.Data.Models;
 using MedApp.Domain.Data.Builders;
-using MedApp.Domain.Configuration;
-using MedApp.Domain.Services;
-using MedApp.Security.Configuration;
+using MedApp.Security;
 using MedApp.Security.Services;
+using MedApp.Repositories;
+using MedApp.Infrastructure;
 
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration((hostingContext, config) =>
@@ -21,8 +24,6 @@ var host = Host.CreateDefaultBuilder(args)
     })
     .ConfigureServices((hostContext, services) =>
     {
-        DomainConfiguration.ConfigureDomain(hostContext, services);
-        SecurityConfiguration.ConfigureSecurity(hostContext, services);
         ConfigureServices(hostContext, services);
     })
     .Build();
@@ -97,9 +98,11 @@ void ConfigureLogging(HostBuilderContext hostContext, LoggerConfiguration logger
 
 void ConfigureServices(HostBuilderContext hostContext, IServiceCollection services)
 {
-    services.AddScoped<IPatientService, PatientService>();
-    services.AddScoped<IUserService, UserService>();
-    services.AddScoped<IPatientService, PatientService>();
+    services.AddInfrastructure(hostContext.Configuration);
+    services.AddRepositories(hostContext.Configuration);
+    services.AddDomain(hostContext.Configuration);
+    services.AddSecurity(hostContext.Configuration);
+    services.AddApplication(hostContext.Configuration);
 }
 
 async Task<bool> AuthenticateUser(IServiceScope scope, string username, string password)

@@ -7,9 +7,9 @@ using MedApp.Domain.Data.Models;
 
 namespace MedApp.Repositories.Implementations;
 
-public class PatientRepositryEFPostgresImpl : IPatientRepository
+public class PatientRepositoryEFPostgresImpl : IPatientRepository
 {
-    public PatientRepositryEFPostgresImpl(MedDbContext dbContext, IMapper mapper)
+    public PatientRepositoryEFPostgresImpl(MedDbContext dbContext, IMapper mapper)
     {
         _dbContext = dbContext;
         _mapper = mapper;
