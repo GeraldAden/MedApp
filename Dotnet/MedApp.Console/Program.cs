@@ -6,11 +6,9 @@ using Serilog;
 using MedApp.Console;
 using MedApp.Domain;
 using MedApp.Domain.Services;
-using MedApp.Domain.Data.Models;
-using MedApp.Domain.Data.Builders;
+using MedApp.Domain.Models;
 using MedApp.Infrastructure;
 using MedApp.Infrastructure.Security;
-using MedApp.Repositories;
 
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration((hostingContext, config) =>
@@ -98,7 +96,6 @@ void ConfigureLogging(HostBuilderContext hostContext, LoggerConfiguration logger
 void ConfigureServices(HostBuilderContext hostContext, IServiceCollection services)
 {
     services.AddInfrastructure(hostContext.Configuration);
-    services.AddRepositories(hostContext.Configuration);
     services.AddDomain(hostContext.Configuration);
     services.AddApplication(hostContext.Configuration);
 }
@@ -158,7 +155,7 @@ async Task AddPatients(IServiceScope scope)
         Log.Debug("Adding patient 1");
         await patientService.AddPatientAsync(patient1);
 
-        Log.Information("Added patient 2");
+        Log.Information("Adding patient 2");
         await patientService.AddPatientAsync(patient2);
 }
 

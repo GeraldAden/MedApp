@@ -7,11 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MedApp.Repositories\MedApp.Repositories.csproj" />
-    <ProjectReference Include="..\MedApp.Domain.Data\MedApp.Domain.Data.csproj" />
+    <ProjectReference Include="..\MedApp.Infrastructure\MedApp.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="serilog" Version="3.0.1" />
   </ItemGroup>
 

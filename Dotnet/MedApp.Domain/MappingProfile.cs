@@ -1,7 +1,7 @@
-namespace MedApp.Repositories;
+namespace MedApp.Domain;
 
 using AutoMapper;
-using MedApp.Domain.Data.Models;
+using MedApp.Domain.Models;
 using Entities = MedApp.Infrastructure.Database.Entities;
 
 public class MappingProfile : Profile

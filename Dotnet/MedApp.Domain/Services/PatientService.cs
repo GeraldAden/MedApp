@@ -1,34 +1,38 @@
 namespace MedApp.Domain.Services;
 
-using MedApp.Domain.Data.Models;
-using MedApp.Repositories.Interfaces;
+using AutoMapper;
+using MedApp.Domain.Models;
+using MedApp.Infrastructure.Repositories;
+using Entities = MedApp.Infrastructure.Database.Entities;
 
 public interface IPatientService
 {
     Task<IEnumerable<Patient>> GetPatientsAsync();
     Task AddPatientAsync(Patient patient);
-//     Task<Patient> GetPatientAsync(string id);
-//     Task<bool> UpdatePatientAsync(Patient patient);
-//     Task<bool> DeletePatientAsync(string id);
 }
 
 public class PatientService : IPatientService
 {
 
-    public PatientService(IPatientRepository patientRepository)
+    public PatientService(IPatientRepository patientRepository, IMapper mapper)
     {
         _patientRepository = patientRepository;
+        _mapper = mapper;
     }
 
     public async Task<IEnumerable<Patient>> GetPatientsAsync()
     {
-        return await _patientRepository.GetPatientsAsync();
+        var patients = await _patientRepository.GetPatientsAsync();
+
+        return _mapper.Map<IEnumerable<Patient>>(patients);
     }
 
     public async Task AddPatientAsync(Patient patient)
     {
-        await _patientRepository.AddPatientAsync(patient);
+        var patientEntity = _mapper.Map<Entities.Patient>(patient);
+        await _patientRepository.AddPatientAsync(patientEntity);
     }
 
     private readonly IPatientRepository _patientRepository;
+    private readonly IMapper _mapper;
 }

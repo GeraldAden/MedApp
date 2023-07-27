@@ -1,4 +1,4 @@
-namespace MedApp.Domain.Data.Models;
+namespace MedApp.Domain.Models;
 
 public record Address (
     string Street,
