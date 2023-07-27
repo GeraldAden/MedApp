@@ -1,4 +1,4 @@
-namespace MedApp.Domain;
+namespace MedApp.Infrastructure;
 
 using AutoMapper;
 using MedApp.Domain.Models;

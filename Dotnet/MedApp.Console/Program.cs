@@ -96,7 +96,6 @@ void ConfigureLogging(HostBuilderContext hostContext, LoggerConfiguration logger
 void ConfigureServices(HostBuilderContext hostContext, IServiceCollection services)
 {
     services.AddInfrastructure(hostContext.Configuration);
-    services.AddDomain(hostContext.Configuration);
     services.AddApplication(hostContext.Configuration);
 }
 
