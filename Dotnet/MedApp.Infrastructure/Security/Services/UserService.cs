@@ -7,7 +7,7 @@ using MedApp.Infrastructure.Database.Entities;
 public interface IUserService
 {
     Task AddUserAsync(User user);
-    Task<User?> GetAuthenticatedUserAsync(string username, string password);
+    Task<User?> AuthenticatedUserAsync(string username, string password);
 }
 
 public class UserService : IUserService
@@ -25,7 +25,7 @@ public class UserService : IUserService
         await _medDbContext.SaveChangesAsync();
     }
 
-    public async Task<User?> GetAuthenticatedUserAsync(string username, string password)
+    public async Task<User?> AuthenticatedUserAsync(string username, string password)
     {
         var user = await _medDbContext.Users
             .SingleOrDefaultAsync(user => user.Username == username);

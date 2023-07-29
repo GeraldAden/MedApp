@@ -3,12 +3,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using MedApp.Application;
 using MedApp.Console;
-using MedApp.Domain;
 using MedApp.Domain.Services;
 using MedApp.Domain.Models;
 using MedApp.Infrastructure;
-using MedApp.Infrastructure.Security;
+using MedApp.Infrastructure.Database.Entities;
+using DomainModels = MedApp.Domain.Models;
 
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration((hostingContext, config) =>
@@ -35,22 +36,7 @@ async Task RunApp(IServiceProvider services)
 
     using var scope = services.CreateScope();
 
-    var authenticated = false;
-
-    while (!authenticated)
-    {
-        Console.Write("Enter username: ");
-        var username = Console.ReadLine();
-        if (String.IsNullOrEmpty(username))
-            continue;
-
-        Console.Write("Enter password: ");
-        var password = ReadPassword();
-        if (String.IsNullOrEmpty(password))
-            continue;
-
-        authenticated = await AuthenticateUser(scope, username, password);
-    }
+    await AuthenticateUser(scope);
 
     while (true)
     {
@@ -99,23 +85,34 @@ void ConfigureServices(HostBuilderContext hostContext, IServiceCollection servic
     services.AddApplication(hostContext.Configuration);
 }
 
-async Task<bool> AuthenticateUser(IServiceScope scope, string username, string password)
+async Task<User> AuthenticateUser(IServiceScope scope)
 {
     Log.Debug("Authenticating user");
 
-    var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
-
-    var user = await userService.GetAuthenticatedUserAsync(username, password);
-
-    if (user != null)
+    while (true)
     {
+        Console.Write("Enter username: ");
+        var username = Console.ReadLine();
+        if (String.IsNullOrEmpty(username))
+            continue;
+
+        Console.Write("Enter password: ");
+        var password = ReadPassword();
+        if (String.IsNullOrEmpty(password))
+            continue;
+
+        var application = scope.ServiceProvider.GetRequiredService<IApplication>();
+
+        var user = await application.AuthenticatedUserAsync(username, password);
+
+        if (user is null)
+        {
+            Console.WriteLine("Invalid username or password");
+            continue;
+        }
+        
         Console.WriteLine($"Welcome {user.FirstName} {user.LastName}");
-        return true;
-    }
-    else
-    {
-        Console.WriteLine("Invalid username or password");
-        return false;
+        return user;
     }
 }
 
@@ -133,8 +130,8 @@ async Task AddPatients(IServiceScope scope)
         .IsSmoker(false)
         .HasCancer(false)
         .HasDiabetes(false)
-        .WithAddresses(new List<Address> {
-            new Address ("123 Main St", "Anytown", "Anystate", "12345")
+        .WithAddresses(new List<DomainModels.Address> {
+            new DomainModels.Address ("123 Main St", "Anytown", "Anystate", "12345")
         })
         .Build();
 
@@ -146,8 +143,8 @@ async Task AddPatients(IServiceScope scope)
         .IsSmoker(false)
         .HasCancer(true)
         .HasDiabetes(false)
-        .WithAddresses(new List<Address> {
-            new Address ("123 Main St", "Anytown", "Anystate", "12345", true)
+        .WithAddresses(new List<DomainModels.Address> {
+            new DomainModels.Address ("123 Main St", "Anytown", "Anystate", "12345", true)
         })
         .Build();
 
