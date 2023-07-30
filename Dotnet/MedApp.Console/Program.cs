@@ -6,10 +6,8 @@ using Serilog;
 using MedApp.Application;
 using MedApp.Console;
 using MedApp.Domain.Services;
-using MedApp.Domain.Models;
 using MedApp.Infrastructure;
 using MedApp.Infrastructure.Database.Entities;
-using DomainModels = MedApp.Domain.Models;
 
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration((hostingContext, config) =>
@@ -36,7 +34,9 @@ async Task RunApp(IServiceProvider services)
 
     using var scope = services.CreateScope();
 
-    await AuthenticateUser(scope);
+    var application = scope.ServiceProvider.GetRequiredService<IApplication>();
+
+    await AuthenticateUser(application);
 
     while (true)
     {
@@ -51,7 +51,7 @@ async Task RunApp(IServiceProvider services)
 
         if (command.ToLower() == "add")
         {
-            await AddPatients(scope);
+            await AddPatients(application);
         }
 
         if (command.ToLower() == "display")
@@ -85,7 +85,7 @@ void ConfigureServices(HostBuilderContext hostContext, IServiceCollection servic
     services.AddApplication(hostContext.Configuration);
 }
 
-async Task<User> AuthenticateUser(IServiceScope scope)
+async Task<User> AuthenticateUser(IApplication application)
 {
     Log.Debug("Authenticating user");
 
@@ -101,8 +101,6 @@ async Task<User> AuthenticateUser(IServiceScope scope)
         if (String.IsNullOrEmpty(password))
             continue;
 
-        var application = scope.ServiceProvider.GetRequiredService<IApplication>();
-
         var user = await application.AuthenticatedUserAsync(username, password);
 
         if (user is null)
@@ -116,43 +114,11 @@ async Task<User> AuthenticateUser(IServiceScope scope)
     }
 }
 
-async Task AddPatients(IServiceScope scope)
+async Task AddPatients(IApplication application)
 {
     Log.Debug("Adding patients");
 
-    var patientService = scope.ServiceProvider.GetRequiredService<IPatientService>();
-
-    var patient1 = new PatientBuilder()
-        .WithFirstName("John")
-        .WithLastName("Doe")
-        .WithDateOfBirth(new DateTime(1990, 1, 1))
-        .WithEmail("johndoe@site.com")
-        .IsSmoker(false)
-        .HasCancer(false)
-        .HasDiabetes(false)
-        .WithAddresses(new List<DomainModels.Address> {
-            new DomainModels.Address ("123 Main St", "Anytown", "Anystate", "12345")
-        })
-        .Build();
-
-    var patient2 = new PatientBuilder()
-        .WithFirstName("Jane")
-        .WithLastName("Doe")
-        .WithDateOfBirth(new DateTime(1970, 1, 1))
-        .WithEmail("janedoe@site.com")
-        .IsSmoker(false)
-        .HasCancer(true)
-        .HasDiabetes(false)
-        .WithAddresses(new List<DomainModels.Address> {
-            new DomainModels.Address ("123 Main St", "Anytown", "Anystate", "12345", true)
-        })
-        .Build();
-
-        Log.Debug("Adding patient 1");
-        await patientService.AddPatientAsync(patient1);
-
-        Log.Information("Adding patient 2");
-        await patientService.AddPatientAsync(patient2);
+    await application.AddPatientsAsync();
 }
 
 async Task DisplayPatients(IServiceScope scope)

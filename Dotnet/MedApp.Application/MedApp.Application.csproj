@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MedApp.Infrastructure\MedApp.Infrastructure.csproj" />
+    <ProjectReference Include="..\MedApp.Domain\MedApp.Domain.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
