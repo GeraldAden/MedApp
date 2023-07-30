@@ -1,9 +1,9 @@
 namespace MedApp.Infrastructure;
 
 using AutoMapper;
+using MedApp.Application.Models;
 using MedApp.Domain.Models;
 using Entities = MedApp.Infrastructure.Database.Entities;
-using MedApp.Infrastructure.Security.Models;
 
 public class MappingProfile : Profile
 {

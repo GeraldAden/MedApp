@@ -3,8 +3,9 @@ namespace MedApp.Console;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using MedApp.Application;
+using MedApp.Application.Services;
 using MedApp.Domain.Services;
-using MedApp.Infrastructure.Security;
+using MedApp.Infrastructure.Services;
 
 public static class DependencyInjection
 {

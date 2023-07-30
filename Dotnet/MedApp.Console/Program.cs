@@ -7,7 +7,7 @@ using MedApp.Application;
 using MedApp.Console;
 using MedApp.Domain.Services;
 using MedApp.Infrastructure;
-using MedApp.Infrastructure.Security.Models;
+using MedApp.Application.Models;
 
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration((hostingContext, config) =>
@@ -101,7 +101,7 @@ async Task<User> AuthenticateUser(IApplication application)
         if (String.IsNullOrEmpty(password))
             continue;
 
-        var user = await application.AuthenticatedUserAsync(username, password);
+        var user = await application.AuthenticateUserAsync(username, password);
 
         if (user is null)
         {

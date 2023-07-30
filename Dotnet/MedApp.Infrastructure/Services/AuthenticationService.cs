@@ -1,4 +1,4 @@
-﻿namespace MedApp.Infrastructure.Security;
+﻿namespace MedApp.Infrastructure.Services;
 
 using System.Security.Cryptography;
 

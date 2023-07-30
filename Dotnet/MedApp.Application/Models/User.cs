@@ -1,5 +1,4 @@
-namespace MedApp.Infrastructure.Security.Models;
-
+namespace MedApp.Application.Models;
 public class User
 {
     public User(string firstName, string lastName, string username, string email)

@@ -1,16 +1,11 @@
-namespace MedApp.Infrastructure.Security;
+namespace MedApp.Infrastructure.Services;
 
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
+using MedApp.Application.Services;
+using MedApp.Application.Models;
 using MedApp.Infrastructure.Database;
 using Entities = MedApp.Infrastructure.Database.Entities;
-using MedApp.Infrastructure.Security.Models;
-
-public interface IUserService
-{
-    Task AddUserAsync(User user);
-    Task<User?> AuthenticatedUserAsync(string username, string password);
-}
 
 public class UserService : IUserService
 {
@@ -29,7 +24,7 @@ public class UserService : IUserService
         await _medDbContext.SaveChangesAsync();
     }
 
-    public async Task<User?> AuthenticatedUserAsync(string username, string password)
+    public async Task<User?> AuthenticateUserAsync(string username, string password)
     {
         var userEntity = await _medDbContext.Users
             .SingleOrDefaultAsync(user => user.Username == username);

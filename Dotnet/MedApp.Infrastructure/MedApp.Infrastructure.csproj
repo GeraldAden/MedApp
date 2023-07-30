@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MedApp.Domain\MedApp.Domain.csproj" />
+    <ProjectReference Include="..\MedApp.Application\MedApp.Application.csproj" />
   </ItemGroup>
 
 </Project>

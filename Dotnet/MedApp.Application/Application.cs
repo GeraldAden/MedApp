@@ -1,13 +1,13 @@
 ﻿namespace MedApp.Application;
 
-using MedApp.Infrastructure.Security;
-using MedApp.Infrastructure.Security.Models;
+using MedApp.Application.Services;
+using MedApp.Application.Models;
 using MedApp.Domain.Services;
 using MedApp.Domain.Models;
 
 public interface IApplication
 {
-    public Task<User?> AuthenticatedUserAsync(string username, string password);
+    public Task<User?> AuthenticateUserAsync(string username, string password);
     public Task AddPatientsAsync();
     public Task DisplayPatientsAsync();
 }
@@ -20,9 +20,9 @@ public class Application : IApplication
         _patientService = patientService;
     }
 
-    public async Task<User?> AuthenticatedUserAsync(string username, string password)
+    public async Task<User?> AuthenticateUserAsync(string username, string password)
     {
-        return await _userService.AuthenticatedUserAsync(username, password);
+        return await _userService.AuthenticateUserAsync(username, password);
     }
 
     public async Task AddPatientsAsync()
