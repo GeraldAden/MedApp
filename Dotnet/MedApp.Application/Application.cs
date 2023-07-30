@@ -1,9 +1,9 @@
 ﻿namespace MedApp.Application;
 
 using MedApp.Infrastructure.Security;
-using MedApp.Infrastructure.Database.Entities;
+using MedApp.Infrastructure.Security.Models;
 using MedApp.Domain.Services;
-using DomainModels = MedApp.Domain.Models;
+using MedApp.Domain.Models;
 
 public interface IApplication
 {
@@ -28,7 +28,7 @@ public class Application : IApplication
     public async Task AddPatientsAsync()
     {
 
-        var patient1 = new DomainModels.PatientBuilder()
+        var patient1 = new PatientBuilder()
             .WithFirstName("John")
             .WithLastName("Doe")
             .WithDateOfBirth(new DateTime(1990, 1, 1))
@@ -36,11 +36,11 @@ public class Application : IApplication
             .IsSmoker(false)
             .HasCancer(false)
             .HasDiabetes(false)
-            .WithAddresses(new List<DomainModels.Address> {
-                new DomainModels.Address ("123 Main St", "Anytown", "Anystate", "12345")
+            .WithAddresses(new List<Address> {
+                new Address ("123 Main St", "Anytown", "Anystate", "12345")
             }).Build();
 
-        var patient2 = new DomainModels.PatientBuilder()
+        var patient2 = new PatientBuilder()
             .WithFirstName("Jane")
             .WithLastName("Doe")
             .WithDateOfBirth(new DateTime(1970, 1, 1))
@@ -48,8 +48,8 @@ public class Application : IApplication
             .IsSmoker(false)
             .HasCancer(true)
             .HasDiabetes(false)
-            .WithAddresses(new List<DomainModels.Address> {
-                new DomainModels.Address ("123 Main St", "Anytown", "Anystate", "12345", true)
+            .WithAddresses(new List<Address> {
+                new Address ("123 Main St", "Anytown", "Anystate", "12345", true)
             }).Build();
 
         await _patientService.AddPatientAsync(patient1);

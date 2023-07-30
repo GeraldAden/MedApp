@@ -3,6 +3,7 @@ namespace MedApp.Infrastructure;
 using AutoMapper;
 using MedApp.Domain.Models;
 using Entities = MedApp.Infrastructure.Database.Entities;
+using MedApp.Infrastructure.Security.Models;
 
 public class MappingProfile : Profile
 {
@@ -23,5 +24,12 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore());
 
         CreateMap<Entities.Address, Address>();
+
+        CreateMap<User, Entities.User>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore());
+
+        CreateMap<Entities.User, User>();
     }
 }

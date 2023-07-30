@@ -7,7 +7,7 @@ using MedApp.Application;
 using MedApp.Console;
 using MedApp.Domain.Services;
 using MedApp.Infrastructure;
-using MedApp.Infrastructure.Database.Entities;
+using MedApp.Infrastructure.Security.Models;
 
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration((hostingContext, config) =>
