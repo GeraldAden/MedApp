@@ -57,9 +57,18 @@ public class Application : IApplication
         await _patientService.AddPatientAsync(patient2);
     }
 
-    public Task DisplayPatientsAsync()
+    public async Task DisplayPatientsAsync()
     {
-        throw new NotImplementedException();
+        var patients = await _patientService.GetPatientsAsync();
+
+        foreach (var patient in patients)
+        {
+            Console.WriteLine($"Patient: {patient.FirstName} {patient.LastName}");
+            foreach (var address in patient.Addresses)
+            {
+                Console.WriteLine($"Address: {address.Street}, {address.City}, {address.State} {address.ZipCode}");
+            }
+        }
     }
 
     public IUserService _userService { get; }

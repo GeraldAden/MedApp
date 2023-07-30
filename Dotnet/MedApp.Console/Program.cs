@@ -3,11 +3,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using MedApp.Application;
 using MedApp.Console;
-using MedApp.Domain.Services;
-using MedApp.Infrastructure;
+using MedApp.Application;
 using MedApp.Application.Models;
+using MedApp.Infrastructure;
 
 var host = Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration((hostingContext, config) =>
@@ -38,7 +37,8 @@ async Task RunApp(IServiceProvider services)
 
     await AuthenticateUser(application);
 
-    while (true)
+    var done = false;;
+    while (!done)
     {
         Console.Write("Enter command (add, display, exit): ");
         var command = Console.ReadLine();
@@ -46,17 +46,20 @@ async Task RunApp(IServiceProvider services)
         if (String.IsNullOrEmpty(command))
             continue;
 
-        if (command.ToLower() == "exit")
-            break;
-
-        if (command.ToLower() == "add")
+        switch (command.ToLower())
         {
-            await AddPatients(application);
-        }
-
-        if (command.ToLower() == "display")
-        {
-            await DisplayPatients(scope);
+            case "add":
+                await AddPatients(application);
+                continue;
+            case "display":
+                await DisplayPatients(application);
+                continue;
+            case "exit":
+                done = true;
+                break;
+            default:
+                Console.WriteLine("Invalid command");
+                continue;
         }
     }
 
@@ -110,6 +113,7 @@ async Task<User> AuthenticateUser(IApplication application)
         }
         
         Console.WriteLine($"Welcome {user.FirstName} {user.LastName}");
+
         return user;
     }
 }
@@ -121,22 +125,11 @@ async Task AddPatients(IApplication application)
     await application.AddPatientsAsync();
 }
 
-async Task DisplayPatients(IServiceScope scope)
+async Task DisplayPatients(IApplication application)
 {
     Log.Debug("Displaying patients");
 
-    var patientService = scope.ServiceProvider.GetRequiredService<IPatientService>();
-
-    var patients = await patientService.GetPatientsAsync();
-
-    foreach (var patient in patients)
-    {
-        Console.WriteLine($"Patient: {patient.FirstName} {patient.LastName}");
-        foreach (var address in patient.Addresses)
-        {
-            Console.WriteLine($"Address: {address.Street}, {address.City}, {address.State} {address.ZipCode}");
-        }
-    }
+    await application.DisplayPatientsAsync();
 }
 
 string ReadPassword()
