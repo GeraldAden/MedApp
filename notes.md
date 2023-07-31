@@ -2,6 +2,10 @@
 
 Getting host ip from WSL2: ip route | awk '/default/ { print $3 }'
 
+Setting test path:
+    "dotnet-test-explorer.testProjectPath": "**/Tests/*.Tests",
+    "dotnet-test-explorer.autoWatch": true,
+
 ### ToDo
 
 Look at using Mediator
