@@ -4,7 +4,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-public class Patient
+public class PatientEntity
 {
     [Key]
     public int Id {get; set;}
@@ -22,7 +22,7 @@ public class Patient
     [Required]
     public string? Email {get; set;}
 
-    public ICollection<Address>? Addresses {get; set;}
+    public ICollection<AddressEntity>? Addresses {get; set;}
 
     [Required]
     public bool IsSmoker {get; set;}

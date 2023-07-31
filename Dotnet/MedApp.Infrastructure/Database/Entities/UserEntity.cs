@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 [Table("users")]
-public class User
+public class UserEntity
 {
     [Key]
     public long Id {get; set;}

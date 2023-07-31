@@ -21,26 +21,26 @@ public class MedDbContext : DbContext
     {
         modelBuilder.HasDefaultSchema("records");
 
-        modelBuilder.Entity<Patient>()
+        modelBuilder.Entity<PatientEntity>()
             .ToTable("patients")
             .HasMany(p => p.Addresses)
             .WithOne(a => a.Patient)
             .HasForeignKey(a => a.PatientId);
 
-        modelBuilder.Entity<User>()
+        modelBuilder.Entity<UserEntity>()
             .Property(p => p.CreatedAt)
                 .HasDefaultValueSql("NOW()");
 
-        modelBuilder.Entity<Patient>()
+        modelBuilder.Entity<PatientEntity>()
             .Property(p => p.CreatedAt)
                 .HasDefaultValueSql("NOW()");
 
-        modelBuilder.Entity<Address>()
+        modelBuilder.Entity<AddressEntity>()
             .Property(p => p.CreatedAt)
                 .HasDefaultValueSql("NOW()");
     }
 
-    public DbSet<User> Users { get; set; }
-    public DbSet<Patient> Patients { get; set; }
-    public DbSet<Address> Addresses { get; set; }
+    public DbSet<UserEntity> Users { get; set; }
+    public DbSet<PatientEntity> Patients { get; set; }
+    public DbSet<AddressEntity> Addresses { get; set; }
 }

@@ -5,7 +5,7 @@ using AutoMapper;
 using MedApp.Application.Services;
 using MedApp.Application.Models;
 using MedApp.Infrastructure.Database;
-using Entities = MedApp.Infrastructure.Database.Entities;
+using MedApp.Infrastructure.Database.Entities;
 
 public class UserService : IUserService
 {
@@ -19,7 +19,7 @@ public class UserService : IUserService
 
     public async Task AddUserAsync(User user)
     {
-        var userEntity = _mapper.Map<Entities.User>(user);
+        var userEntity = _mapper.Map<UserEntity>(user);
         await _medDbContext.Users.AddAsync(userEntity);
         await _medDbContext.SaveChangesAsync();
     }

@@ -5,7 +5,7 @@ using AutoMapper;
 using MedApp.Domain.Repositories;
 using MedApp.Domain.Models;
 using MedApp.Infrastructure.Database;
-using Entities = MedApp.Infrastructure.Database.Entities;
+using MedApp.Infrastructure.Database.Entities;
 
 public class PatientRepositoryEFPostgresImpl : IPatientRepository
 {
@@ -26,7 +26,7 @@ public class PatientRepositoryEFPostgresImpl : IPatientRepository
 
     public async Task AddPatientAsync(Patient patient)
     {
-        var patientEntity = _mapper.Map<Entities.Patient>(patient);
+        var patientEntity = _mapper.Map<PatientEntity>(patient);
         patientEntity.DateOfBirth = patient.DateOfBirth.ToUniversalTime();
         await _dbContext.Patients.AddAsync(patientEntity);
         await _dbContext.SaveChangesAsync();

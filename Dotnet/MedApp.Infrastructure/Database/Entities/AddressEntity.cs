@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 [Table("addresses")]
-public class Address
+public class AddressEntity
 {
     [Key]
     public int Id { get; set; }
@@ -34,5 +34,5 @@ public class Address
 
     public int PatientId {get; set;}
 
-    public Patient? Patient {get; set;}
+    public PatientEntity? Patient {get; set;}
 }
