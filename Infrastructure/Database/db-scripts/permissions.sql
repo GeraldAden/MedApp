@@ -1,0 +1,1 @@
+GRANT ALL PRIVILEGES ON SCHEMA records TO medapp;

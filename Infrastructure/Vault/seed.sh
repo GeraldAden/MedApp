@@ -6,4 +6,4 @@ vault login root
 
 # vault kv put secret/medapp db_username=admin db_password=pgadmin
 
-vault kv put secret/medapp ConnectionString="Host=localhost;Port=5432;Database=meddb;Username=admin;Password=pgadmin;"
+vault kv put secret/medapp ConnectionString="Host=localhost;Port=5432;Database=meddb;Username=medapp;Password=apppw;"
