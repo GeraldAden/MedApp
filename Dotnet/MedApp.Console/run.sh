@@ -1,6 +1,7 @@
 #!/bin/bash
 
-export ASPNETCORE_ENVIRONMENT=Development
+export DOTNET_ENVIRONMENT=Development
+export VAULT_ADDR=http://localhost:8200/
 
 docker compose -f ../../Infrastructure/infrastructure-compose.yml up -d
 
