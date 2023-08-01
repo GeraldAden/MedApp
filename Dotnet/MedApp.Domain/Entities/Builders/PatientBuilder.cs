@@ -1,4 +1,4 @@
-namespace MedApp.Domain.Entities;
+namespace MedApp.Domain.Entities.Builders;
 
 public class PatientBuilder
 {

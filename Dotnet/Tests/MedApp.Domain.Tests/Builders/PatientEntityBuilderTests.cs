@@ -1,10 +1,10 @@
-namespace MedApp.Domain.Tests.Builders;
+namespace MedApp.Domain.Entities.Builders.Tests;
 
 using FluentAssertions;
 using MedApp.Domain.Entities;
 
 [TestFixture]
-public class PatientBuilderTests
+public class PatientEntityBuilderTests
 {
     [Test]
     public void Build_ReturnsPatientWithCorrectProperties()

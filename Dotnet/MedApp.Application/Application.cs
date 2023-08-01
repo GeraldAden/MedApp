@@ -4,6 +4,7 @@ using MedApp.Application.Abstractions.Services;
 using MedApp.Application.Abstractions.Models;
 using MedApp.Domain.Services;
 using MedApp.Domain.Entities;
+using MedApp.Domain.Entities.Builders;
 
 public interface IApplication
 {
