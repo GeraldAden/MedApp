@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using MedApp.Console;
+using MedApp.Presentation.Console;
 using MedApp.Application;
 using MedApp.Application.Abstractions.Models;
 using MedApp.Domain;

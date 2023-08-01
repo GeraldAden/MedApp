@@ -1,4 +1,4 @@
-namespace MedApp.Console;
+namespace MedApp.Presentation.Console;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;

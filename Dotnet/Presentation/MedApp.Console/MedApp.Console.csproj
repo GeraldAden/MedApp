@@ -14,9 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MedApp.Domain\MedApp.Domain.csproj" />
-    <ProjectReference Include="..\MedApp.Infrastructure\MedApp.Infrastructure.csproj" />
-    <ProjectReference Include="..\MedApp.Application\MedApp.Application.csproj" />
+    <ProjectReference Include="..\..\MedApp.Domain\MedApp.Domain.csproj" />
+    <ProjectReference Include="..\..\MedApp.Infrastructure\MedApp.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\MedApp.Application\MedApp.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
