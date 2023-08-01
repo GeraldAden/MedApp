@@ -1,6 +1,6 @@
-namespace MedApp.Domain.Repositories;
+namespace MedApp.Domain.Abstractions.Repositories;
 
-using MedApp.Domain.Models;
+using MedApp.Domain.Entities;
 
 public interface IPatientRepository
 {

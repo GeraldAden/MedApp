@@ -1,11 +1,11 @@
-namespace MedApp.Infrastructure.Database.Entities;
+namespace MedApp.Infrastructure.Persistence.Entities;
 
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 [Table("addresses")]
-public class AddressEntity
+public record AddressEntity
 {
     [Key]
     public int Id { get; set; }

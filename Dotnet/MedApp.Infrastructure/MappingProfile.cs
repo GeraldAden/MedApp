@@ -1,9 +1,9 @@
 namespace MedApp.Infrastructure;
 
 using AutoMapper;
-using MedApp.Application.Models;
-using MedApp.Domain.Models;
-using Entities = MedApp.Infrastructure.Database.Entities;
+using MedApp.Application.Abstractions.Models;
+using MedApp.Domain.Entities;
+using Entities = MedApp.Infrastructure.Persistence.Entities;
 
 public class MappingProfile : Profile
 {

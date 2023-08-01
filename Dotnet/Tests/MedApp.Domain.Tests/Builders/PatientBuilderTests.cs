@@ -1,7 +1,7 @@
 namespace MedApp.Domain.Tests.Builders;
 
 using FluentAssertions;
-using MedApp.Domain.Models;
+using MedApp.Domain.Entities;
 
 [TestFixture]
 public class PatientBuilderTests

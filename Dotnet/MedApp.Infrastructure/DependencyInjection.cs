@@ -1,13 +1,13 @@
+namespace MedApp.Infrastructure;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MedApp.Application.Services;
-using MedApp.Domain.Repositories;
-using MedApp.Infrastructure.Database;
+using MedApp.Application.Abstractions.Services;
+using MedApp.Domain.Abstractions.Repositories;
 using MedApp.Infrastructure.Services;
-using MedApp.Infrastructure.Repositories;
-
-namespace MedApp.Infrastructure;
+using MedApp.Infrastructure.Persistence;
+using MedApp.Infrastructure.Persistence.Repositories;
 
 public static class DependencyInjection
 {

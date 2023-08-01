@@ -1,7 +1,7 @@
-using Microsoft.EntityFrameworkCore;
-using MedApp.Infrastructure.Database.Entities;
+namespace MedApp.Infrastructure.Persistence;
 
-namespace MedApp.Infrastructure.Database;
+using Microsoft.EntityFrameworkCore;
+using MedApp.Infrastructure.Persistence.Entities;
 
 public class MedDbContext : DbContext
 {

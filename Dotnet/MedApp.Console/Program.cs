@@ -5,7 +5,8 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using MedApp.Console;
 using MedApp.Application;
-using MedApp.Application.Models;
+using MedApp.Application.Abstractions.Models;
+using MedApp.Domain;
 using MedApp.Infrastructure;
 
 var host = Host.CreateDefaultBuilder(args)
@@ -84,8 +85,9 @@ void ConfigureLogging(HostBuilderContext hostContext, LoggerConfiguration logger
 
 void ConfigureServices(HostBuilderContext hostContext, IServiceCollection services)
 {
-    services.AddInfrastructure(hostContext.Configuration);
     services.AddApplication(hostContext.Configuration);
+    services.AddDomain(hostContext.Configuration);
+    services.AddInfrastructure(hostContext.Configuration);
 }
 
 async Task<User> AuthenticateUser(IApplication application)

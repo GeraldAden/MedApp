@@ -1,15 +1,14 @@
-namespace MedApp.Infrastructure.Database.Entities;
+namespace MedApp.Infrastructure.Persistence.Entities;
 
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-[Table("users")]
-public class UserEntity
+public record PatientEntity
 {
     [Key]
-    public long Id {get; set;}
-    
+    public int Id {get; set;}
+
     [Required]
     public string? FirstName {get; set;}
 
@@ -17,17 +16,23 @@ public class UserEntity
     public string? LastName {get; set;}
 
     [Required]
-    public string? Username {get; set;}
+    [Column(TypeName = "date")]
+    public DateTime DateOfBirth {get; set;}
 
     [Required]
     public string? Email {get; set;}
 
-    [Required]
-    public string? PasswordSalt {get; set;}
+    public ICollection<AddressEntity>? Addresses {get; set;}
 
     [Required]
-    public string? PasswordHash {get; set;}
-    
+    public bool IsSmoker {get; set;}
+
+    [Required]
+    public bool HasCancer {get; set;}
+
+    [Required]
+    public bool HasDiabetes {get; set;}
+
     [Required]
     [Column(TypeName = "timestamp")]
     public DateTime CreatedAt {get; set;}

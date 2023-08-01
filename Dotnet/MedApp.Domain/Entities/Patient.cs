@@ -1,4 +1,4 @@
-namespace MedApp.Domain.Models;
+namespace MedApp.Domain.Entities;
 
 public record Patient (
     string FirstName,

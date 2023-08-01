@@ -1,4 +1,4 @@
-namespace MedApp.Application.Models;
+namespace MedApp.Application.Abstractions.Models;
 public class User
 {
     public User(string firstName, string lastName, string username, string email)

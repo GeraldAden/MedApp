@@ -1,6 +1,6 @@
-namespace MedApp.Application.Services;
+namespace MedApp.Application.Abstractions.Services;
 
-using MedApp.Application.Models;
+using MedApp.Application.Abstractions.Models;
 
 public interface IUserService // implemented by Infrastructure
 {

@@ -2,10 +2,10 @@ namespace MedApp.Infrastructure.Services;
 
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
-using MedApp.Application.Services;
-using MedApp.Application.Models;
-using MedApp.Infrastructure.Database;
-using MedApp.Infrastructure.Database.Entities;
+using MedApp.Application.Abstractions.Services;
+using MedApp.Application.Abstractions.Models;
+using MedApp.Infrastructure.Persistence;
+using MedApp.Infrastructure.Persistence.Entities;
 
 public class UserService : IUserService
 {

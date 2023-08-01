@@ -1,9 +1,9 @@
 ﻿namespace MedApp.Application;
 
-using MedApp.Application.Services;
-using MedApp.Application.Models;
+using MedApp.Application.Abstractions.Services;
+using MedApp.Application.Abstractions.Models;
 using MedApp.Domain.Services;
-using MedApp.Domain.Models;
+using MedApp.Domain.Entities;
 
 public interface IApplication
 {

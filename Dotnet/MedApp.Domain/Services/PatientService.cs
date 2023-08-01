@@ -1,7 +1,7 @@
 namespace MedApp.Domain.Services;
 
-using MedApp.Domain.Models;
-using MedApp.Domain.Repositories;
+using MedApp.Domain.Entities;
+using MedApp.Domain.Abstractions.Repositories;
 
 public interface IPatientService
 {

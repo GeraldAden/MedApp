@@ -1,11 +1,10 @@
-namespace MedApp.Infrastructure.Repositories;
+namespace MedApp.Infrastructure.Persistence.Repositories;
 
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
-using MedApp.Domain.Repositories;
-using MedApp.Domain.Models;
-using MedApp.Infrastructure.Database;
-using MedApp.Infrastructure.Database.Entities;
+using MedApp.Domain.Abstractions.Repositories;
+using MedApp.Domain.Entities;
+using MedApp.Infrastructure.Persistence.Entities;
 
 public class PatientRepositoryEFPostgresImpl : IPatientRepository
 {
